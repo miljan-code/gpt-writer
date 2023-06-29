@@ -35,7 +35,14 @@ module.exports = {
       },
       backgroundImage: {
         'image-gradient':
-          'conic-gradient(from 180deg at 50% 50%,#ff7a85 0deg,#a488f6 112.5deg,#1a8cff 228.75deg,rgba(13, 17, 23, 0) 360deg)',
+          'conic-gradient(from 180deg at 50% 50%,#ff7a85 0deg,#a488f6 112.5deg,#1a8cff 228.75deg,#ff7a85 360deg)',
+        'button-gradient':
+          'linear-gradient(to bottom right,#a488f6ee,#1a8cffaa);',
+        'border-gradient':
+          'radial-gradient(62.87% 100% at 50% 100%,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 100%)',
+      },
+      boxShadow: {
+        button: 'rgba(26,140,255,0.3) 0px 0px 40px',
       },
     },
   },

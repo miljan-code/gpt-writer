@@ -22,3 +22,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: rgba(0, 0, 0, 0.56) 0px 3px 12px;
+  }
+
+  .text-shadow-sm {
+    text-shadow: rgba(0, 0, 0, 0.25) 0px 3px 8px;
+  }
+}

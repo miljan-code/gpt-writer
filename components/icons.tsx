@@ -1,11 +1,17 @@
+import { Menu, X, type LucideProps } from 'lucide-react';
+
 export const Icons = {
-  logo: () => (
+  menu: Menu,
+  close: X,
+  logo: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 64 64"
       width="36px"
       height="36px"
       baseProfile="basic"
+      className="pt-0.5"
+      {...props}
     >
       <path
         fill="#fff"
