@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 216 28% 7%;
+    --foreground: 220 100% 99%;
+
+    --muted: 214 21% 68%;
+    --accent: 213 31% 85%;
+    --border: 218 18% 21%;
+
+    --primary: 210 100% 55%;
+    --secondary: 255 86% 75%;
+    --tertiary: 355 100% 74%;
+
+    --nav-height: 5.5rem;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
