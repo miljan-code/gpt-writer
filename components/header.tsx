@@ -56,7 +56,10 @@ export const Header = () => {
           >
             Sign in
           </Link>
-          <Link href="/dashboard" className={buttonVariants()}>
+          <Link
+            href="/dashboard"
+            className={cn(buttonVariants(), 'hidden sm:inline-block')}
+          >
             Try now
           </Link>
           <Button

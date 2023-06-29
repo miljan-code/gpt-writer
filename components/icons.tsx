@@ -1,8 +1,16 @@
-import { Menu, X, type LucideProps } from 'lucide-react';
+import {
+  Menu,
+  X,
+  Sparkles,
+  ChevronRight,
+  type LucideProps,
+} from 'lucide-react';
 
 export const Icons = {
   menu: Menu,
   close: X,
+  sparkles: Sparkles,
+  chevronRight: ChevronRight,
   logo: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

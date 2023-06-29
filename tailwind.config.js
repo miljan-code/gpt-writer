@@ -40,9 +40,12 @@ module.exports = {
           'linear-gradient(to bottom right,#a488f6ee,#1a8cffaa);',
         'border-gradient':
           'radial-gradient(62.87% 100% at 50% 100%,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 100%)',
+        'header-gradient':
+          'radial-gradient(37.74% 81.78% at 50% 26.56%,rgba(164, 136, 246,.06) 0%,rgba(3,0,20,0) 100%)',
       },
       boxShadow: {
         button: 'rgba(26,140,255,0.3) 0px 0px 40px',
+        hero: 'rgba(0, 99, 198, 0.1) 0px 0px 150px 100px',
       },
     },
   },

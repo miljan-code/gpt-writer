@@ -9,11 +9,14 @@ export const buttonVariants = cva(
       variant: {
         default:
           'bg-button-gradient text-shadow-sm hover:shadow-button hover:text-shadow transition-[shadow, text-shadow] duration-300',
+        secondary:
+          'border border-border bg-border/50 hover:bg-border transition-colors duration-300',
         ghost: 'hover:text-muted transition-colors duration-300',
       },
       size: {
-        default: 'h-8 px-4 py-1.5',
-        sm: '',
+        default: 'px-4 py-1.5 gap-4',
+        sm: 'px-3 py-1 gap-1.5 font-normal',
+        lg: 'px-6 py-3 text-base',
       },
     },
     defaultVariants: {
