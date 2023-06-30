@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signInSchema } from '@/lib/validations/auth';
 import { Icons } from '@/components/icons';
+import { OAuthSignInButton } from '@/components/oauth-sign-in-button';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,22 +31,11 @@ export const SignInForm = () => {
     },
   });
 
-  const oauthSignIn = () => {};
-
   const onSubmit = () => {};
 
   return (
     <>
-      <Button
-        variant="outline"
-        rounded="md"
-        className="w-full"
-        onClick={oauthSignIn}
-        disabled={isLoading}
-      >
-        <Icons.google className="h-4 w-4" />
-        <span>Continue with Google</span>
-      </Button>
+      <OAuthSignInButton isLoading={isLoading} setIsLoading={setIsLoading} />
       <div className="relative my-8 h-[1px] w-full bg-divider-gradient after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:px-3 after:text-xs after:content-['or']" />
       <Form {...form}>
         <form

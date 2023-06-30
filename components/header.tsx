@@ -6,8 +6,13 @@ import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
+import type { Session } from 'next-auth';
 
-export const Header = () => {
+interface HeaderProps {
+  session: Session | null;
+}
+
+export const Header = ({ session }: HeaderProps) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const handleMenu = () => setMenuIsOpen(prev => !prev);
@@ -52,18 +57,29 @@ export const Header = () => {
           </nav>
         </div>
         <div className="flex-1 flex items-center justify-end gap-4">
-          <Link
-            href="/sign-in"
-            className={buttonVariants({ variant: 'ghost' })}
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/sign-up"
-            className={cn(buttonVariants(), 'hidden sm:inline-block')}
-          >
-            Sign up
-          </Link>
+          {session ? (
+            <Link
+              href="/dashboard"
+              className={cn(buttonVariants(), 'hidden sm:inline-block')}
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/sign-in"
+                className={buttonVariants({ variant: 'ghost' })}
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/sign-up"
+                className={cn(buttonVariants(), 'hidden sm:inline-block')}
+              >
+                Sign up
+              </Link>
+            </>
+          )}
           <Button
             onClick={handleMenu}
             variant="ghost"

@@ -11,7 +11,7 @@ export const AuthFeature = ({ icon, label, sublabel }: AuthFeatureProps) => {
 
   return (
     <div className="flex items-start gap-3 pr-10">
-      <div className="bg-border/75 rounded-md p-1 mt-1">
+      <div className="bg-border/75 rounded-md p-1 mt-1 text-primary">
         <Icon size={18} />
       </div>
       <div className="flex flex-col">
