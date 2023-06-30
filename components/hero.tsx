@@ -26,7 +26,7 @@ export const Hero = () => {
           <span>Get Started</span>
           <Icons.chevronRight className="h-4 ml-1 -mr-2" />
         </Link>
-        <div className="relative mt-16 md:mt-32 after:absolute after:inset-0 after:w-full after:h-full after:shadow-hero-image after:animate-pulse-slow">
+        <div className="relative my-16 md:my-32 after:absolute after:inset-0 after:w-full after:h-full after:shadow-hero-image after:animate-pulse-slow">
           <div className="relative p-[1px] rounded-lg overflow-hidden before:absolute before:inset-0 before:w-full before:h-full before:bg-primary/10 after:absolute after:top-0 after:left-0 after:w-full max-md:after:h-full md:after:-top-96 md:after:-left-48 md:after:w-[calc(100%*1.41)] md:after:aspect-square after:bg-logo-gradient md:after:bg-image-gradient after:rounded-lg md:after:animate-rotate after:-z-[2] after:animate-none">
             <div className="relative z-10 w-fit rounded-lg overflow-hidden">
               <Image src={heroImage} alt="Hero image" />

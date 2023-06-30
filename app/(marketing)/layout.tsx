@@ -1,3 +1,4 @@
+import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 
 interface MarketingLayoutProps {
@@ -9,6 +10,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
     <>
       <Header />
       <main className="pt-nav-height">{children}</main>
+      <Footer />
     </>
   );
 }
