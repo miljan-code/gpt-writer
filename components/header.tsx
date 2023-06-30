@@ -12,15 +12,12 @@ export const Header = () => {
 
   const handleMenu = () => setMenuIsOpen(prev => !prev);
 
-  // TODO: Animation on open menu
-  // TODO: Backdrop blur
-
   return (
     <header className="fixed inset-0 h-nav-height backdrop-blur-md z-50">
       <div className="relative h-full container flex items-center justify-between after:absolute after:left-0 after:bottom-0 after:h-[1px] after:w-full max-md:after:bg-border/50 md:after:bg-border-gradient">
         <div className="flex-1">
           <Link href="/" className="inline-flex items-center gap-3">
-            <div className="h-[40px] w-[40px] bg-image-gradient rounded-md flex items-center justify-center">
+            <div className="h-[40px] w-[40px] bg-logo-gradient rounded-md flex items-center justify-center">
               <div className="border border-border rounded-md w-fit h-fit bg-background/80">
                 <Icons.logo />
               </div>
@@ -28,13 +25,18 @@ export const Header = () => {
             <span className="font-semibold inline-block">GPT Writer</span>
           </Link>
         </div>
-        <div className={cn('md:flex-1 flex items-center justify-center')}>
+        <div
+          className={cn(
+            'md:flex-1 flex items-center justify-center md:visible',
+            menuIsOpen ? 'visible' : 'invisible delay-0'
+          )}
+        >
           <nav
             className={cn(
-              'fixed top-nav-height flex flex-col w-full h-[calc(100vh-var(--nav-height))] backdrop-blur-md overflow-auto bg-background md:overflow-hidden md:backdrop-blur-none md:border md:border-border/50 md:rounded-full md:py-2 md:px-4 md:items-center md:bg-border/5 md:relative md:flex-row md:top-auto md:h-auto md:translate-x-0 md:opacity-100',
+              'fixed top-nav-height flex flex-col w-full h-[calc(100vh-var(--nav-height))] overflow-auto bg-background delay-100 transition-[opacity,transform] md:delay-0 md:transition-none md:overflow-hidden md:border md:border-border/50 md:rounded-full md:py-2 md:px-4 md:items-center md:bg-border/5 md:relative md:flex-row md:top-auto md:h-auto md:translate-x-0 md:opacity-100',
               {
-                'translate-x-0 opacity-100': menuIsOpen,
-                'translate-x-[-100vw] opacity-0': !menuIsOpen,
+                'translate-x-0 opacity-100 duration-500': menuIsOpen,
+                'translate-x-[100vw] opacity-0': !menuIsOpen,
               }
             )}
           >
@@ -57,10 +59,10 @@ export const Header = () => {
             Sign in
           </Link>
           <Link
-            href="/dashboard"
+            href="/sign-up"
             className={cn(buttonVariants(), 'hidden sm:inline-block')}
           >
-            Try now
+            Sign up
           </Link>
           <Button
             onClick={handleMenu}

@@ -34,18 +34,33 @@ module.exports = {
         },
       },
       backgroundImage: {
-        'image-gradient':
+        'logo-gradient':
           'conic-gradient(from 180deg at 50% 50%,#ff7a85 0deg,#a488f6 112.5deg,#1a8cff 228.75deg,#ff7a85 360deg)',
+        'image-gradient':
+          'conic-gradient(from 180deg at 50% 50%,#ff7a85 0deg,#a488f6 112.5deg,#1a8cff 228.75deg,#0d1117 360deg)',
         'button-gradient':
           'linear-gradient(to bottom right,#a488f6ee,#1a8cffaa);',
         'border-gradient':
           'radial-gradient(62.87% 100% at 50% 100%,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 100%)',
         'header-gradient':
           'radial-gradient(37.74% 81.78% at 50% 26.56%,rgba(164, 136, 246,.06) 0%,rgba(3,0,20,0) 100%)',
+        'divider-gradient':
+          'linear-gradient(90deg, hsla(218, 18%, 21%, 1) 45%, hsla(218, 18%, 21%, 0) 45%, hsla(218, 18%, 21%, 0) 55%, hsla(218, 18%, 21%, 1) 55%);',
       },
       boxShadow: {
         button: 'rgba(26,140,255,0.3) 0px 0px 40px',
         hero: 'rgba(0, 99, 198, 0.1) 0px 0px 150px 100px',
+        'hero-image': 'rgba(0, 99, 198, 0.1) 0px 0px 150px 20px',
+      },
+      keyframes: {
+        rotate: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        rotate: 'rotate 20s linear infinite',
+        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },
