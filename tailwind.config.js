@@ -51,6 +51,7 @@ module.exports = {
         button: 'rgba(26,140,255,0.3) 0px 0px 40px',
         hero: 'rgba(0, 99, 198, 0.1) 0px 0px 150px 100px',
         'hero-image': 'rgba(0, 99, 198, 0.1) 0px 0px 150px 20px',
+        dashboard: 'rgba(0, 99, 198, 0.07) 0px 0px 200px 20px',
       },
       keyframes: {
         rotate: {

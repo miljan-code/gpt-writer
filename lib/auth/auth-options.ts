@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
     strategy: 'database',
   },
   pages: {
-    signIn: '/',
+    signIn: '/sign-in',
   },
   providers: [
     GithubProvider({

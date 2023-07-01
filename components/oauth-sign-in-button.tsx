@@ -1,6 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 
@@ -18,6 +19,7 @@ export const OAuthSignInButton = ({
 
     try {
       await signIn('google');
+      redirect('/dashboard');
     } catch (error) {
       // toast
     } finally {

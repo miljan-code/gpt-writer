@@ -6,12 +6,10 @@ const footerColumns = [
     title: 'Product',
     links: [
       { title: 'Features', href: '#' },
-      { title: 'Integrations', href: '#' },
       { title: 'Pricing', href: '#' },
-      { title: 'Changelog', href: '#' },
+      { title: 'Dashboard', href: '#' },
       { title: 'Docs', href: '#' },
-      { title: 'Linear Method', href: '#' },
-      { title: 'Download', href: '#' },
+      { title: 'Contact', href: '#' },
     ],
   },
   {
@@ -28,9 +26,8 @@ const footerColumns = [
     title: 'Resources',
     links: [
       { title: 'Community', href: '#' },
-      { title: 'Contact', href: '#' },
-      { title: 'DPA', href: '#' },
       { title: 'Terms of service', href: '#' },
+      { title: 'Privacy policy', href: '#' },
     ],
   },
   {
