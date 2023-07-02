@@ -23,6 +23,14 @@ export const signInSchema = z.object({
 });
 
 export const signUpSchema = signInSchema.extend({
+  fullName: z
+    .string({
+      required_error: 'Please enter your full name',
+    })
+    .min(3, {
+      message: 'Full name must be at least 3 characters long',
+    })
+    .max(100),
   confirmPassword: z
     .string({
       required_error: 'Please confirm your password',

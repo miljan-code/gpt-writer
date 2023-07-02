@@ -1,9 +1,11 @@
 'use client';
 
 import * as z from 'zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import { signUpSchema } from '@/lib/validations/auth';
 import { Icons } from '@/components/icons';
 import { OAuthSignInButton } from '@/components/oauth-sign-in-button';
@@ -17,22 +19,72 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { toast } from '@/components/ui/use-toast';
 
 type FormData = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
   const form = useForm<FormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      fullName: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+
+    const signUpResult = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!signUpResult.ok) {
+      setIsLoading(false);
+
+      if (signUpResult.status === 409) {
+        form.setError('email', {
+          message: 'Email address is already in use',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Something went wrong',
+        description: 'Your account was not created. Please, try again.',
+      });
+      return;
+    }
+
+    const signInResult = await signIn('credentials', {
+      ...formData,
+      redirect: true,
+    });
+
+    if (signInResult?.error) {
+      toast({
+        title: 'Something went wrong',
+        description:
+          'Your account is created but you are not signed in. Please, try to sign in again.',
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    router.refresh();
+    router.replace('/dashboard');
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -43,6 +95,19 @@ export const SignUpForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full name</FormLabel>
+                <FormControl>
+                  <Input placeholder="John Doe" type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"

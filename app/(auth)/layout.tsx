@@ -1,5 +1,4 @@
 import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth/auth-options';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -10,8 +9,6 @@ interface AuthLayoutProps {
 
 export default async function AuthLayout({ children }: AuthLayoutProps) {
   const session = await getServerSession(authOptions);
-
-  if (session) return redirect('/');
 
   return (
     <>

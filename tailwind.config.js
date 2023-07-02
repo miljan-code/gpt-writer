@@ -22,6 +22,7 @@ module.exports = {
         primary: 'hsl(var(--primary))',
         secondary: 'hsl(var(--secondary))',
         tertiary: 'hsl(var(--tertiary))',
+        destructive: 'hsl(var(--destructive))',
       },
       spacing: {
         'nav-height': 'var(--nav-height)',

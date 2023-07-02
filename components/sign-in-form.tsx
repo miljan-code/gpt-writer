@@ -1,9 +1,11 @@
 'use client';
 
 import * as z from 'zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import { signInSchema } from '@/lib/validations/auth';
 import { Icons } from '@/components/icons';
 import { OAuthSignInButton } from '@/components/oauth-sign-in-button';
@@ -23,6 +25,8 @@ type FormData = z.infer<typeof signInSchema>;
 export const SignInForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
   const form = useForm<FormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -31,7 +35,34 @@ export const SignInForm = () => {
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+
+    const signInResult = await signIn('credentials', {
+      ...formData,
+      redirect: false,
+    });
+
+    if (signInResult?.error) {
+      if (signInResult.error.includes('email')) {
+        form.setError('email', {
+          message: signInResult.error,
+        });
+      }
+      if (signInResult.error.includes('password')) {
+        form.setError('password', {
+          message: signInResult.error,
+        });
+      }
+
+      setIsLoading(false);
+      return;
+    }
+
+    router.refresh();
+    router.replace('/dashboard');
+    setIsLoading(false);
+  };
 
   return (
     <>
