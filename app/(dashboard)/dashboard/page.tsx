@@ -1,4 +1,5 @@
 import { DateRangePicker } from '@/components/dashboard/date-range-picker';
+import { Overview } from '@/components/dashboard/overview';
 import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -7,7 +8,6 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import type { Metadata } from 'next';
-import { Overview } from '@/components/dashboard/overview';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -17,7 +17,7 @@ export default async function DashboardPage() {
   return (
     <>
       <Tabs defaultValue="overview">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:items-center justify-between sm:flex-row max-sm:gap-6">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <HoverCard>
@@ -25,8 +25,8 @@ export default async function DashboardPage() {
                 <TabsTrigger value="services" disabled>
                   Services
                 </TabsTrigger>
-                <TabsTrigger value="billings" disabled>
-                  Billings
+                <TabsTrigger value="payments" disabled>
+                  Payments
                 </TabsTrigger>
               </HoverCardTrigger>
               <HoverCardContent>Coming soon</HoverCardContent>
@@ -35,7 +35,7 @@ export default async function DashboardPage() {
           <DateRangePicker />
         </div>
         <TabsContent value="overview" className="pt-5 flex flex-col gap-6">
-          <div className="grid gap-6 grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
             <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm tracking-tight font-medium text-accent">
@@ -85,8 +85,8 @@ export default async function DashboardPage() {
               </span>
             </div>
           </div>
-          <div className="grid gap-6 grid-cols-7">
-            <div className="border border-border/50 rounded-md w-full pr-3 pb-2 col-span-4">
+          <div className="flex flex-col md:grid gap-6 md:grid-cols-7">
+            <div className="border border-border/50 rounded-md w-full pr-3 pb-2 md:col-span-4">
               <div className="p-6 flex flex-col gap-1">
                 <h3 className="tracking-tight font-medium text-accent">
                   Overview
@@ -97,7 +97,7 @@ export default async function DashboardPage() {
                 <Overview />
               </div>
             </div>
-            <div className="border border-border/50 rounded-md w-full p-6 col-span-3">
+            <div className="border border-border/50 rounded-md w-full p-6 md:col-span-3">
               <div className="flex flex-col gap-1">
                 <h3 className="tracking-tight font-medium text-accent">
                   Recent Prompts
@@ -119,7 +119,9 @@ export default async function DashboardPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm">-30 credits</span>
+                      <span className="text-sm">
+                        -30 <span className="hidden sm:inline">credits</span>
+                      </span>
                       <Icons.coins size={16} />
                     </div>
                   </div>
@@ -127,7 +129,7 @@ export default async function DashboardPage() {
               </div>
             </div>
           </div>
-          <div className="grid gap-6 grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
             <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm tracking-tight font-medium text-accent">
