@@ -2,6 +2,12 @@ import Link from 'next/link';
 import { authFeatureItems } from '@/config/auth-features';
 import { SignUpForm } from '@/components/sign-up-form';
 import { AuthFeature } from '@/components/auth-feature';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Sign up',
+  description: 'Create new account',
+};
 
 export default function SignUpPage() {
   return (

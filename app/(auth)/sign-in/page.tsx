@@ -2,6 +2,12 @@ import Link from 'next/link';
 import { authFeatureItems } from '@/config/auth-features';
 import { SignInForm } from '@/components/sign-in-form';
 import { AuthFeature } from '@/components/auth-feature';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Sign in',
+  description: 'Sign in to your account',
+};
 
 export default function SignInPage() {
   return (

@@ -7,6 +7,18 @@ import {
   Zap,
   Database,
   Share,
+  LayoutDashboard,
+  CaseSensitive,
+  FileText,
+  Repeat,
+  Edit,
+  Wand2,
+  Settings,
+  Receipt,
+  LogOut,
+  Languages,
+  Coins,
+  Book,
   type LucideProps,
 } from 'lucide-react';
 
@@ -19,6 +31,18 @@ export const Icons = {
   zap: Zap,
   database: Database,
   share: Share,
+  dashboard: LayoutDashboard,
+  letters: CaseSensitive,
+  textFile: FileText,
+  repeat: Repeat,
+  edit: Edit,
+  wand: Wand2,
+  settings: Settings,
+  receipt: Receipt,
+  logout: LogOut,
+  languages: Languages,
+  coins: Coins,
+  book: Book,
   logo: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

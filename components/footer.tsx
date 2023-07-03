@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Icons } from './icons';
+import { siteConfig } from '@/config/site';
+import { Icons } from '@/components/icons';
 
 const footerColumns = [
   {
@@ -52,10 +53,10 @@ export const Footer = () => {
                   <Icons.logo className="h-4 w-4" />
                 </div>
               </div>
-              <span className="inline-block text-xs">GPT Writer</span>
+              <span className="inline-block text-xs">{siteConfig.name}</span>
             </Link>
             <span className="hidden md:inline-block text-muted text-xs">
-              AI Powered Copywriting Tool
+              {siteConfig.description}
             </span>
           </div>
           <div className="flex gap-4 text-accent">

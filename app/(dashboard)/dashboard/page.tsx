@@ -1,14 +1,13 @@
-'use client';
+import type { Metadata } from 'next';
 
-import { Button } from '@/components/ui/button';
-import { signOut } from 'next-auth/react';
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 export default function DashboardPage() {
   return (
     <>
-      <div className="">
-        <Button onClick={() => signOut()}>Sign out</Button>
-      </div>
+      <div className="">Hello World</div>
     </>
   );
 }
