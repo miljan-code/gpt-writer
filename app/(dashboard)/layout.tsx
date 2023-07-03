@@ -92,7 +92,7 @@ export default async function DashboardLayout({
           <span className="text-xs text-muted">GPT Writer &copy; 0.1.0</span>
         </div>
       </aside>
-      <section>{children}</section>
+      <section className="p-6 w-full">{children}</section>
     </main>
   );
 }
