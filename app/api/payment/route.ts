@@ -32,8 +32,11 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-      metadata: {
-        userId: session.user.id,
+      payment_intent_data: {
+        metadata: {
+          plan: plan.stripePriceId,
+          userId: session.user.id,
+        },
       },
     });
 

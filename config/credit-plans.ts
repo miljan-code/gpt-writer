@@ -1,4 +1,7 @@
-import type { CreditPlan } from '@/types/dashboard';
+import * as z from 'zod';
+import { creditPlanSchema } from '@/lib/validations/plan';
+
+type CreditPlan = z.infer<typeof creditPlanSchema>;
 
 export const creditPlans: CreditPlan[] = [
   {

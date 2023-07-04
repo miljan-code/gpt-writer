@@ -133,7 +133,7 @@ export default async function DashboardPage() {
             <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Credits
+                  Total Words Left
                 </h3>
                 <Icons.coins size={14} className="text-accent" />
               </div>
@@ -145,7 +145,7 @@ export default async function DashboardPage() {
             <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Credits in USD
+                  Total Words Generated
                 </h3>
                 <Icons.dollar size={14} className="text-accent" />
               </div>
@@ -157,7 +157,7 @@ export default async function DashboardPage() {
             <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Spent Credits
+                  Price per Word
                 </h3>
                 <Icons.circleDollar size={14} className="text-accent" />
               </div>

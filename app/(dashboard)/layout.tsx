@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth-options';
-import { generateFallback } from '@/lib/utils';
+import { getCurrentUser } from '@/lib/auth/session';
 import { dashboardConfig } from '@/config/dashboard';
+import { UserProfile } from '@/components/dashboard/user-profile';
+import { MobileNav } from '@/components/dashboard/mobile-nav';
 import { Icons } from '@/components/icons';
 import { SignOutButton } from '@/components/sign-out-button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   HoverCard,
   HoverCardContent,
@@ -20,38 +19,15 @@ interface DashboardLayoutProps {
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
-  const session = await getServerSession(authOptions);
+  const currentUser = await getCurrentUser();
 
-  if (!session) return redirect('/');
+  if (!currentUser) return redirect('/');
 
   return (
     <main className="container relative min-h-screen xl:min-h-[calc(100vh-80px)] xl:border xl:border-border/50 xl:bg-border/5 xl:mt-10 xl:rounded-lg xl:before:absolute xl:before:inset-0 xl:before:w-full xl:before:h-full xl:before:shadow-dashboard xl:before:z-[-1] p-0 flex">
       <aside className="lg:visible lg:relative absolute invisible max-w-[13.75rem] w-full border-r border-border/50 py-3 px-4 flex flex-col gap-5">
         <div className="flex items-center justify-between mb-6 my-3">
-          <div className="flex items-center gap-2">
-            <Link href="/dashboard/settings">
-              <Avatar className="cursor-pointer">
-                <AvatarImage
-                  src={session.user.image || ''}
-                  alt={session.user.name || 'Unknown user'}
-                />
-                <AvatarFallback>
-                  {generateFallback(session.user.name || '')}
-                </AvatarFallback>
-              </Avatar>
-            </Link>
-            <div className="flex flex-col">
-              <Link href="/dashboard/settings" className="text-sm">
-                {session.user.name}
-              </Link>
-              <Link
-                href="/dashboard/credits"
-                className="text-xs text-muted hover:underline hover:underline-offset-2"
-              >
-                0 credits
-              </Link>
-            </div>
-          </div>
+          <UserProfile currentUser={currentUser} />
           <HoverCard>
             <HoverCardTrigger asChild>
               <Link
@@ -92,7 +68,13 @@ export default async function DashboardLayout({
           <span className="text-xs text-muted">GPT Writer &copy; 0.1.0</span>
         </div>
       </aside>
-      <section className="p-6 w-full">{children}</section>
+      <div className="w-full flex flex-col lg:flex-row">
+        <div className="lg:hidden border-b border-border/50 px-6 py-4 flex items-center justify-between">
+          <MobileNav />
+          <UserProfile currentUser={currentUser} />
+        </div>
+        <section className="p-6 w-full h-full">{children}</section>
+      </div>
     </main>
   );
 }

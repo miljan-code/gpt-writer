@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts"
+    "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "stripe:trigger": "stripe trigger payment_intent.succeeded"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
@@ -23,6 +25,7 @@
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "ai": "^2.1.14",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
     "class-variance-authority": "^0.6.1",
@@ -34,6 +37,7 @@
     "lucide-react": "^0.256.0",
     "next": "13.4.7",
     "next-auth": "^4.22.1",
+    "openai-edge": "^1.1.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-day-picker": "^8.8.0",
