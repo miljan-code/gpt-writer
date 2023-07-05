@@ -23,6 +23,7 @@ import {
   CircleDollarSign,
   TerminalSquare,
   CheckCircle,
+  Maximize,
   type LucideProps,
 } from 'lucide-react';
 
@@ -51,6 +52,7 @@ export const Icons = {
   circleDollar: CircleDollarSign,
   terminal: TerminalSquare,
   check: CheckCircle,
+  maximize: Maximize,
   logo: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

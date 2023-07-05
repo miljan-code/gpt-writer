@@ -7,10 +7,10 @@ export const SignOutButton = () => {
   return (
     <button
       onClick={() => signOut()}
-      className="group flex items-center gap-2 px-2 py-1 rounded-md hover:bg-border transition-colors duration-100 text-accent cursor-default"
+      className="group flex items-center gap-3 sm:gap-2 px-2 py-1 rounded-md hover:bg-border transition-colors duration-100 text-accent cursor-default"
     >
-      <Icons.logout size={16} className="group-hover:text-white" />
-      <p className="text-sm">Logout</p>
+      <Icons.logout className="group-hover:text-white sm:h-4 sm:w-4" />
+      <p className="text-lg sm:text-sm">Logout</p>
     </button>
   );
 };

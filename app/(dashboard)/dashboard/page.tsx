@@ -17,6 +17,7 @@ export default async function DashboardPage() {
   return (
     <>
       <Tabs defaultValue="overview">
+        {/* TABS */}
         <div className="flex flex-col sm:items-center justify-between sm:flex-row max-sm:gap-6">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -34,6 +35,7 @@ export default async function DashboardPage() {
           </TabsList>
           <DateRangePicker />
         </div>
+        {/* CONTENT */}
         <TabsContent value="overview" className="pt-5 flex flex-col gap-6">
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
             <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">

@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useLockBody } from '@/hooks/use-lock-body';
+import { useWindowResize } from '@/hooks/use-window-resize';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
@@ -14,6 +16,9 @@ interface HeaderProps {
 
 export const Header = ({ session }: HeaderProps) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  useLockBody(menuIsOpen);
+  useWindowResize(() => setMenuIsOpen(false));
 
   const handleMenu = () => setMenuIsOpen(prev => !prev);
 
