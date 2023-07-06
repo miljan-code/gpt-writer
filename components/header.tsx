@@ -43,10 +43,10 @@ export const Header = ({ currentUser }: HeaderProps) => {
         >
           <nav
             className={cn(
-              'fixed top-nav-height flex flex-col w-full h-[calc(100vh-var(--nav-height))] overflow-auto bg-background delay-100 transition-[opacity,transform] md:delay-0 md:transition-none md:overflow-hidden md:border md:border-border/50 md:rounded-full md:py-2 md:px-4 md:items-center md:bg-border/5 md:relative md:flex-row md:top-auto md:h-auto md:translate-x-0 md:opacity-100',
+              'fixed top-nav-height flex flex-col w-full h-[calc(100vh-var(--nav-height))] overflow-auto bg-background delay-100 transition-[opacity,transform] md:delay-0 md:transition-none md:overflow-hidden md:border md:border-border/50 md:rounded-full md:py-2 md:px-4 md:items-center md:bg-border/5 md:relative md:flex-row md:top-auto md:h-auto md:translate-x-0 md:opacity-100  duration-300',
               {
-                'translate-x-0 opacity-100 duration-500': menuIsOpen,
-                'translate-x-[100vw] opacity-0': !menuIsOpen,
+                'translate-x-0 opacity-100': menuIsOpen,
+                'translate-x-full opacity-0': !menuIsOpen,
               }
             )}
           >
@@ -55,6 +55,7 @@ export const Header = ({ currentUser }: HeaderProps) => {
                 key={navItem.label}
                 href={navItem.href}
                 className="md:mx-2.5 text-2xl font-medium md:font-normal md:text-sm hover:text-muted transition-colors duration-300 px-10 md:px-0 py-5 md:py-0 border-b border-border/50 md:border-none"
+                onClick={() => setMenuIsOpen(false)}
               >
                 {navItem.label}
               </Link>

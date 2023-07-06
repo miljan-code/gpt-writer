@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { isClerkAPIResponseError, useSignIn } from '@clerk/nextjs';
 import { signInSchema } from '@/lib/validations/auth';
 import { Icons } from '@/components/icons';
-import { OAuthButton } from '@/components/oauth-button';
+import { OAuthButton } from '@/components/auth/oauth-button';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -78,7 +78,7 @@ export const SignInForm = () => {
   return (
     <>
       <OAuthButton isLoading={isLoading} setIsLoading={setIsLoading} />
-      <div className="relative my-8 h-[1px] w-full bg-divider-gradient after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:px-3 after:text-xs after:content-['or']" />
+      <div className="relative my-8 h-[1px] w-full bg-divider-gradient after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:px-3 after:text-xs after:content-['or'] after:text-muted" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

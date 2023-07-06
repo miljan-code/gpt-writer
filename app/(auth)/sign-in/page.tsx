@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { authFeatureItems } from '@/config/auth-features';
-import { SignInForm } from '@/components/sign-in-form';
-import { AuthFeature } from '@/components/auth-feature';
+import { SignInForm } from '@/components/auth/sign-in-form';
+import { AuthFeature } from '@/components/auth/auth-feature';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
     "stripe:trigger": "stripe trigger payment_intent.succeeded"
   },
@@ -15,7 +14,6 @@
     "@clerk/nextjs": "^4.21.14",
     "@hookform/resolvers": "^3.1.1",
     "@paralleldrive/cuid2": "^2.2.1",
-    "@planetscale/database": "^1.8.0",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-hover-card": "^1.0.6",
     "@radix-ui/react-label": "^2.0.2",
@@ -26,19 +24,16 @@
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
-    "ai": "^2.1.15",
+    "ai": "^2.1.8",
     "autoprefixer": "10.4.14",
-    "bcrypt": "^5.1.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
-    "dotenv": "^16.3.1",
-    "drizzle-orm": "^0.27.0",
     "encoding": "^0.1.13",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
+    "jotai": "^2.2.2",
     "lucide-react": "^0.256.0",
     "next": "13.4.7",
-    "next-auth": "^4.22.1",
     "openai-edge": "^1.1.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
@@ -53,9 +48,5 @@
     "tailwindcss-animate": "^1.0.6",
     "typescript": "5.1.6",
     "zod": "^3.21.4"
-  },
-  "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
-    "drizzle-kit": "^0.19.3"
   }
 }

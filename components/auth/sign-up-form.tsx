@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { isClerkAPIResponseError, useSignUp } from '@clerk/nextjs';
 import { signUpSchema } from '@/lib/validations/auth';
 import { Icons } from '@/components/icons';
-import { OAuthButton } from '@/components/oauth-button';
+import { OAuthButton } from '@/components/auth/oauth-button';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,7 +33,8 @@ export const SignUpForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      fullName: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -52,26 +53,22 @@ export const SignUpForm = () => {
     }
 
     try {
-      const result = await signUp.create({
+      await signUp.create({
         emailAddress: formData.email,
         password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
       });
 
-      if (result.status === 'complete') {
-        await setActive({ session: result.createdSessionId });
+      await signUp.prepareEmailAddressVerification({
+        strategy: 'email_code',
+      });
 
-        // TODO: MUST VERIFY
-
-        await fetch('/api/auth/user');
-
-        router.push('/dashboard');
-      } else {
-        throw new Error(
-          'An error occured when setting session, please try again.'
-        );
-      }
-
-      router.push('/dashboard');
+      router.push('/sign-up/verify-email');
+      toast({
+        title: 'Check your email',
+        description: 'We sent you a 6-digit verification code.',
+      });
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
         return toast({
@@ -98,25 +95,40 @@ export const SignUpForm = () => {
         setIsLoading={setIsLoading}
         type="sign-up"
       />
-      <div className="relative my-8 h-[1px] w-full bg-divider-gradient after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:px-3 after:text-xs after:content-['or']" />
+      <div className="relative my-8 h-[1px] w-full bg-divider-gradient after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:px-3 after:text-xs after:content-['or'] after:text-muted" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
-          <FormField
-            control={form.control}
-            name="fullName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Doe" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex items-center gap-6">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Doe" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="email"

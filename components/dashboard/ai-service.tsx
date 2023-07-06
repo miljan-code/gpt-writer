@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCompletion } from 'ai/react';
+import { useAtom } from 'jotai';
+import { showContentAtom } from '@/lib/atoms';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,13 +13,29 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import { toast } from '@/components/ui/use-toast';
 
-export const GrammarChecker = () => {
+interface AIServiceProps {
+  service: 'grammar' | 'paraphrase';
+}
+
+export const AIService = ({ service }: AIServiceProps) => {
   const [content, setContent] = useState('');
+  const [_, setShowContent] = useAtom(showContentAtom);
+
+  const router = useRouter();
 
   const { complete, completion } = useCompletion({
-    api: '/api/generate/grammar',
-    // TODO: add onError
+    api: `/api/generate/${service}`,
+    onError: error => {
+      toast({
+        title: 'Something went wrong',
+        description: error.message,
+      });
+    },
+    onFinish() {
+      router.refresh();
+    },
   });
 
   const prevRef = useRef('');
@@ -24,7 +43,6 @@ export const GrammarChecker = () => {
   const inputTextRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    // TODO: refresh UI when done
     const diff = completion.slice(prevRef.current.length);
     prevRef.current = completion;
     if (!outputDivRef.current) return;
@@ -34,8 +52,6 @@ export const GrammarChecker = () => {
   const wordCount = inputTextRef.current
     ? inputTextRef.current.value.split(' ').length - 1
     : 0;
-
-  const handleFullscreen = () => {}; // Context, fullscreen component on layout?
 
   const handleCopyText = () => {
     if (!outputDivRef.current) return null;
@@ -57,7 +73,7 @@ export const GrammarChecker = () => {
           <div className="text-sm flex items-center gap-4">
             <span>Words: {wordCount}</span>
             <span className="flex items-center gap-1">
-              Price: ~{Math.ceil(wordCount / 200)} <Icons.coins size={12} />
+              Price: {Math.ceil(wordCount / 200)} <Icons.coins size={12} />
             </span>
           </div>
           <Button
@@ -79,7 +95,7 @@ export const GrammarChecker = () => {
             <HoverCard>
               <HoverCardTrigger asChild>
                 <Icons.maximize
-                  onClick={handleFullscreen}
+                  onClick={() => setShowContent(content)}
                   size={18}
                   className="cursor-pointer"
                 />
