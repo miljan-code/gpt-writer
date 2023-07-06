@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth-options';
+import { getCurrentUser } from '@/lib/session';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
@@ -8,11 +7,11 @@ interface AuthLayoutProps {
 }
 
 export default async function AuthLayout({ children }: AuthLayoutProps) {
-  const session = await getServerSession(authOptions);
+  const currentUser = await getCurrentUser();
 
   return (
     <>
-      <Header session={session} />
+      <Header currentUser={currentUser} />
       <main className="pt-nav-height">
         <section className="relative before:absolute before:h-[400px] before:container before:left-1/2 before:-translate-x-1/2 before:pointer-events-none before:z-[1] before:bg-header-gradient before:-top-nav-height">
           {children}

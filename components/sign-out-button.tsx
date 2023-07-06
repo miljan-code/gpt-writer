@@ -1,9 +1,11 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
+import { useClerk } from '@clerk/clerk-react';
 import { Icons } from '@/components/icons';
 
 export const SignOutButton = () => {
+  const { signOut } = useClerk();
+
   return (
     <button
       onClick={() => signOut()}

@@ -1,3 +1,4 @@
+import { ClerkProvider } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { Toaster } from '@/components/ui/toaster';
@@ -60,17 +61,19 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          fontSans.variable,
-          fontHeading.variable,
-          'font-sans antialiased'
-        )}
-      >
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            fontSans.variable,
+            fontHeading.variable,
+            'font-sans antialiased'
+          )}
+        >
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

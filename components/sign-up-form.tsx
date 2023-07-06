@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { isClerkAPIResponseError, useSignUp } from '@clerk/nextjs';
 import { signUpSchema } from '@/lib/validations/auth';
 import { Icons } from '@/components/icons';
-import { OAuthSignInButton } from '@/components/oauth-sign-in-button';
+import { OAuthButton } from '@/components/oauth-button';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,6 +28,8 @@ export const SignUpForm = () => {
 
   const router = useRouter();
 
+  const { isLoaded: isAuthLoaded, signUp, setActive } = useSignUp();
+
   const form = useForm<FormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -41,54 +43,61 @@ export const SignUpForm = () => {
   const onSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    const signUpResult = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    if (!isAuthLoaded) return null;
 
-    if (!signUpResult.ok) {
-      setIsLoading(false);
+    if (formData.password !== formData.confirmPassword) {
+      return form.setError('confirmPassword', {
+        message: 'Passwords did not match',
+      });
+    }
 
-      if (signUpResult.status === 409) {
-        form.setError('email', {
-          message: 'Email address is already in use',
-        });
-        return;
+    try {
+      const result = await signUp.create({
+        emailAddress: formData.email,
+        password: formData.password,
+      });
+
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId });
+
+        // TODO: MUST VERIFY
+
+        await fetch('/api/auth/user');
+
+        router.push('/dashboard');
+      } else {
+        throw new Error(
+          'An error occured when setting session, please try again.'
+        );
       }
 
-      toast({
-        title: 'Something went wrong',
-        description: 'Your account was not created. Please, try again.',
-      });
-      return;
-    }
+      router.push('/dashboard');
+    } catch (error) {
+      if (isClerkAPIResponseError(error)) {
+        return toast({
+          title: 'Something went wrong',
+          description: error.errors[0]?.longMessage,
+        });
+      }
 
-    const signInResult = await signIn('credentials', {
-      ...formData,
-      redirect: true,
-    });
-
-    if (signInResult?.error) {
-      toast({
-        title: 'Something went wrong',
-        description:
-          'Your account is created but you are not signed in. Please, try to sign in again.',
-      });
+      if (error instanceof Error) {
+        toast({
+          title: 'Something went wrong',
+          description: error.message,
+        });
+      }
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    router.refresh();
-    router.replace('/dashboard');
-    setIsLoading(false);
   };
 
   return (
     <>
-      <OAuthSignInButton isLoading={isLoading} setIsLoading={setIsLoading} />
+      <OAuthButton
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        type="sign-up"
+      />
       <div className="relative my-8 h-[1px] w-full bg-divider-gradient after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:px-3 after:text-xs after:content-['or']" />
       <Form {...form}>
         <form

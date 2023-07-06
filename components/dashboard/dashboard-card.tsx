@@ -1,4 +1,4 @@
-import { Icons } from '../icons';
+import { Icons } from '@/components/icons';
 
 interface DashboardCardProps {
   title: string;

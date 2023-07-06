@@ -1,21 +1,25 @@
-import { getToken } from 'next-auth/jwt';
-import { NextRequest, NextResponse } from 'next/server';
+import { authMiddleware } from '@clerk/nextjs';
+import { NextResponse } from 'next/server';
 
-export async function middleware(req: NextRequest) {
-  const authPaths = ['/sign-in', '/sign-up'];
-  const restrictedPaths = ['/dashboard'];
-  const requestedPath = req.nextUrl.pathname;
-  const token = await getToken({ req });
+export default authMiddleware({
+  publicRoutes: ['/', '/sign-in(.*)', '/sign-up(.*)', '/api/webhooks(.*)'],
+  afterAuth(auth, req, evt) {
+    if (!auth.userId && !auth.isPublicRoute) {
+      const signInUrl = new URL('/sign-in', req.url);
+      signInUrl.searchParams.set('redirect_url', req.url);
+      return NextResponse.redirect(signInUrl);
+    }
 
-  if (token && authPaths.includes(requestedPath)) {
-    const url = new URL('/', req.url);
-    return NextResponse.redirect(url);
-  }
+    const authRoutes = ['sign-in', 'sign-up'];
+    const isAuthRoute = authRoutes.some(route => req.url.includes(route));
 
-  if (!token && restrictedPaths.includes(requestedPath)) {
-    const url = new URL('/sign-in', req.url);
-    return NextResponse.redirect(url);
-  }
+    if (auth.userId && isAuthRoute) {
+      const indexUrl = new URL('/', req.url);
+      return NextResponse.redirect(indexUrl);
+    }
+  },
+});
 
-  return NextResponse.next();
-}
+export const config = {
+  matcher: '/((?!_next/image|_next/static|favicon.ico).*)',
+};

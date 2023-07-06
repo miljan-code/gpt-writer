@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth-options';
+import { getCurrentUser } from '@/lib/session';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 interface MarketingLayoutProps {
@@ -9,11 +8,11 @@ interface MarketingLayoutProps {
 export default async function MarketingLayout({
   children,
 }: MarketingLayoutProps) {
-  const session = await getServerSession(authOptions);
+  const currentUser = await getCurrentUser();
 
   return (
     <>
-      <Header session={session} />
+      <Header currentUser={currentUser} />
       <main className="pt-nav-height">{children}</main>
       <Footer />
     </>

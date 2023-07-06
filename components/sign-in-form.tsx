@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { isClerkAPIResponseError, useSignIn } from '@clerk/nextjs';
 import { signInSchema } from '@/lib/validations/auth';
 import { Icons } from '@/components/icons';
-import { OAuthSignInButton } from '@/components/oauth-sign-in-button';
+import { OAuthButton } from '@/components/oauth-button';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { toast } from '@/components/ui/use-toast';
 
 type FormData = z.infer<typeof signInSchema>;
 
@@ -26,6 +27,8 @@ export const SignInForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  const { isLoaded: isAuthLoaded, signIn, setActive } = useSignIn();
 
   const form = useForm<FormData>({
     resolver: zodResolver(signInSchema),
@@ -38,35 +41,43 @@ export const SignInForm = () => {
   const onSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    const signInResult = await signIn('credentials', {
-      ...formData,
-      redirect: false,
-    });
+    if (!isAuthLoaded) return null;
 
-    if (signInResult?.error) {
-      if (signInResult.error.includes('email')) {
-        form.setError('email', {
-          message: signInResult.error,
+    try {
+      const result = await signIn.create({
+        identifier: formData.email,
+        password: formData.password,
+      });
+
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId });
+
+        router.push('/dashboard');
+      } else {
+        throw new Error(
+          'An error occured when setting session, please try again.'
+        );
+      }
+    } catch (error) {
+      if (isClerkAPIResponseError(error)) {
+        return toast({
+          title: 'Something went wrong',
+          description: error.errors[0]?.longMessage,
         });
       }
-      if (signInResult.error.includes('password')) {
-        form.setError('password', {
-          message: signInResult.error,
-        });
-      }
 
+      toast({
+        title: 'Something went wrong',
+        description: 'You are not logged in',
+      });
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    router.refresh();
-    router.replace('/dashboard');
-    setIsLoading(false);
   };
 
   return (
     <>
-      <OAuthSignInButton isLoading={isLoading} setIsLoading={setIsLoading} />
+      <OAuthButton isLoading={isLoading} setIsLoading={setIsLoading} />
       <div className="relative my-8 h-[1px] w-full bg-divider-gradient after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:px-3 after:text-xs after:content-['or']" />
       <Form {...form}>
         <form

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { getCurrentUser } from '@/lib/auth/session';
+import { getCurrentUser } from '@/lib/session';
 import { UserProfile } from '@/components/dashboard/user-profile';
 import { MobileNav } from '@/components/dashboard/mobile-nav';
 import {

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { generateFallback } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import type { User } from '@/types';
+import type { User } from '@/types/session';
 
 interface UserProfileProps {
   currentUser: User;
@@ -13,17 +13,22 @@ export const UserProfile = ({ currentUser }: UserProfileProps) => {
       <Link href="/dashboard/settings">
         <Avatar className="cursor-pointer">
           <AvatarImage
-            src={currentUser.image || ''}
-            alt={currentUser.name || 'Unknown user'}
+            src={currentUser.imageUrl || ''}
+            alt={
+              `${currentUser.firstName} ${currentUser.lastName}` ||
+              'Unknown user'
+            }
           />
           <AvatarFallback>
-            {generateFallback(currentUser.name || '')}
+            {generateFallback(
+              `${currentUser.firstName} ${currentUser.lastName}` || ''
+            )}
           </AvatarFallback>
         </Avatar>
       </Link>
       <div className="flex flex-col">
         <Link href="/dashboard/settings" className="text-sm">
-          {currentUser.name}
+          {`${currentUser.firstName} ${currentUser.lastName}`}
         </Link>
         <Link
           href="/dashboard/credits"

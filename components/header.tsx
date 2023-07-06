@@ -8,13 +8,13 @@ import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
-import type { Session } from 'next-auth';
+import type { User } from '@/types/session';
 
 interface HeaderProps {
-  session: Session | null;
+  currentUser: User | null;
 }
 
-export const Header = ({ session }: HeaderProps) => {
+export const Header = ({ currentUser }: HeaderProps) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   useLockBody(menuIsOpen);
@@ -62,7 +62,7 @@ export const Header = ({ session }: HeaderProps) => {
           </nav>
         </div>
         <div className="flex-1 flex items-center justify-end gap-4">
-          {session ? (
+          {currentUser ? (
             <Link
               href="/dashboard"
               className={cn(buttonVariants(), 'hidden sm:inline-block')}

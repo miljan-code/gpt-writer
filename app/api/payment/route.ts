@@ -1,15 +1,14 @@
 import * as z from 'zod';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth-options';
+import { currentUser } from '@clerk/nextjs';
 import { stripe } from '@/lib/stripe';
 import { siteConfig } from '@/config/site';
 import { creditPlanSchema } from '@/lib/validations/plan';
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await currentUser();
 
-    if (!session?.user || !session?.user.email) {
+    if (!user) {
       return new Response(null, { status: 403 });
     }
 
@@ -25,7 +24,7 @@ export async function POST(req: Request) {
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
-      customer_email: session.user.email,
+      customer_email: user.emailAddresses[0].emailAddress,
       line_items: [
         {
           price: process.env[plan.stripePriceId],
@@ -35,7 +34,7 @@ export async function POST(req: Request) {
       payment_intent_data: {
         metadata: {
           plan: plan.stripePriceId,
-          userId: session.user.id,
+          userId: user.id,
         },
       },
     });

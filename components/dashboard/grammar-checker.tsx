@@ -16,6 +16,7 @@ export const GrammarChecker = () => {
 
   const { complete, completion } = useCompletion({
     api: '/api/generate/grammar',
+    // TODO: add onError
   });
 
   const prevRef = useRef('');
@@ -23,6 +24,7 @@ export const GrammarChecker = () => {
   const inputTextRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    // TODO: refresh UI when done
     const diff = completion.slice(prevRef.current.length);
     prevRef.current = completion;
     if (!outputDivRef.current) return;
@@ -35,7 +37,7 @@ export const GrammarChecker = () => {
 
   const handleFullscreen = () => {}; // Context, fullscreen component on layout?
 
-  const copyText = () => {
+  const handleCopyText = () => {
     if (!outputDivRef.current) return null;
     const text = outputDivRef.current.innerText;
     navigator.clipboard.writeText(text);
@@ -86,7 +88,7 @@ export const GrammarChecker = () => {
             </HoverCard>
           </div>
           <Button
-            onClick={copyText}
+            onClick={handleCopyText}
             variant="secondary"
             className="bg-primary hover:bg-primary/80"
           >
