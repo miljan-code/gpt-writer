@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useLockBody } from '@/hooks/use-lock-body';
 import { useWindowResize } from '@/hooks/use-window-resize';
@@ -26,6 +27,8 @@ interface NavigationProps {
 }
 
 export const Navigation = ({ onNavLinkClick }: NavigationProps) => {
+  const pathname = usePathname();
+
   const handleNavLinkClick = () => {
     if (!onNavLinkClick) return null;
     onNavLinkClick();
@@ -41,7 +44,10 @@ export const Navigation = ({ onNavLinkClick }: NavigationProps) => {
           <Link
             href={link.href}
             key={link.label}
-            className="group flex items-center gap-3 sm:gap-2 px-2 py-1 rounded-md hover:bg-border transition-colors duration-100 text-accent cursor-default"
+            className={cn(
+              'group flex items-center gap-3 sm:gap-2 px-2 py-1 rounded-md hover:bg-border transition-colors duration-100 text-accent cursor-default',
+              pathname === link.href && 'bg-border'
+            )}
             onClick={handleNavLinkClick}
           >
             <Icon className="group-hover:text-white sm:h-4 sm:w-4" />

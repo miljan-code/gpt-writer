@@ -1,11 +1,14 @@
 'use client';
 
 import { useAtom } from 'jotai';
+import { useLockBody } from '@/hooks/use-lock-body';
 import { showContentAtom } from '@/lib/atoms';
 import { Icons } from '@/components/icons';
 
 export const FullscreenContent = () => {
   const [showContent, setShowContent] = useAtom(showContentAtom);
+
+  useLockBody(!!showContent);
 
   const handleCloseFullscren = () => setShowContent('');
 

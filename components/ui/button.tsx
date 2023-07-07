@@ -11,6 +11,8 @@ export const buttonVariants = cva(
           'bg-button-gradient text-shadow-sm hover:shadow-button hover:text-shadow transition-[shadow, text-shadow] duration-300',
         secondary:
           'border border-border bg-border/50 hover:bg-border transition-colors duration-300',
+        tertiary:
+          'bg-primary hover:bg-primary/80 transition-colors duration-300',
         outline:
           'border border-border hover:bg-primary/5 transition-colors duration-300',
         ghost: '',
