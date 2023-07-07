@@ -10,7 +10,7 @@ import { toast } from '@/components/ui/use-toast';
 import { OutputBox } from '@/components/dashboard/output-box';
 
 interface AIServiceProps {
-  service: 'grammar' | 'paraphrase';
+  service: 'grammar' | 'paraphrase' | 'summarize' | 'seo';
 }
 
 export const AIService = ({ service }: AIServiceProps) => {
@@ -47,7 +47,7 @@ export const AIService = ({ service }: AIServiceProps) => {
     : 0;
 
   return (
-    <div className="h-full flex flex-col md:flex-row gap-6">
+    <div className="flex-grow flex flex-col md:flex-row gap-6">
       <div className="border border-border/50 rounded-lg w-full h-full flex flex-col overflow-hidden">
         <Textarea
           ref={inputTextRef}

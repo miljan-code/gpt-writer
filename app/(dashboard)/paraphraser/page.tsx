@@ -7,5 +7,13 @@ export const metadata: Metadata = {
 };
 
 export default function ParaphraserPage() {
-  return <AIService service="paraphrase" />;
+  return (
+    <div className="flex flex-col h-full">
+      <div className="mb-4">
+        <h2 className="font-heading text-3xl">Paraphraser</h2>
+        <p className="text-muted">Writer block? Steal like an artist.</p>
+      </div>
+      <AIService service="grammar" />
+    </div>
+  );
 }

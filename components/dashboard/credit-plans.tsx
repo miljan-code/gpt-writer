@@ -58,7 +58,9 @@ export const CreditPlans = () => {
           onActiveChange={setActivePlan}
         />
       ))}
-      <Button type="submit">Pay now</Button>
+      <Button variant="tertiary" rounded="md" type="submit">
+        Pay now
+      </Button>
     </form>
   );
 };

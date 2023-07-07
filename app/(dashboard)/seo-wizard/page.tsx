@@ -1,3 +1,4 @@
+import { AIService } from '@/components/dashboard/ai-service';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,5 +7,15 @@ export const metadata: Metadata = {
 };
 
 export default function SEOWizardPage() {
-  return <div className="">Hello world</div>;
+  return (
+    <div className="flex flex-col h-full">
+      <div className="mb-4">
+        <h2 className="font-heading text-3xl">SEO Wizard</h2>
+        <p className="text-muted">
+          Optimize your content for search engines in one click.
+        </p>
+      </div>
+      <AIService service="seo" />
+    </div>
+  );
 }

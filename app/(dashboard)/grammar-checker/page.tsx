@@ -7,5 +7,13 @@ export const metadata: Metadata = {
 };
 
 export default function GrammarCheckerPage() {
-  return <AIService service="grammar" />;
+  return (
+    <div className="flex flex-col h-full">
+      <div className="mb-4">
+        <h2 className="font-heading text-3xl">Grammar Checker</h2>
+        <p className="text-muted">Write like a pro, everywhere you write.</p>
+      </div>
+      <AIService service="grammar" />
+    </div>
+  );
 }
