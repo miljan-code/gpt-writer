@@ -35,7 +35,7 @@ export const OutputBox = forwardRef<HTMLDivElement>(({}, ref) => {
   };
 
   return (
-    <div className="border border-border/50 rounded-lg w-full h-full flex flex-col overflow-hidden">
+    <div className="border border-border/50 rounded-lg w-full max-md:min-h-[30rem] h-full flex flex-col overflow-hidden">
       <div ref={handleRef} className="h-full px-3 py-2 text-sm overflow-auto" />
       <div className="py-2 px-4 flex items-center justify-between bg-border/50">
         <div className="text-sm">

@@ -14,5 +14,6 @@ export const getCurrentUser = async () => {
     imageUrl: user.imageUrl,
     createdAt: user.createdAt,
     credits: user.publicMetadata.credits as number,
+    passwordEnabled: user.passwordEnabled,
   } satisfies User;
 };

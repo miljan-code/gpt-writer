@@ -48,7 +48,7 @@ export const AIService = ({ service }: AIServiceProps) => {
 
   return (
     <div className="flex-grow flex flex-col md:flex-row gap-6">
-      <div className="border border-border/50 rounded-lg w-full h-full flex flex-col overflow-hidden">
+      <div className="border border-border/50 rounded-lg w-full max-md:min-h-[30rem] h-full flex flex-col overflow-hidden">
         <Textarea
           ref={inputTextRef}
           className="h-full resize-none border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 overflow-auto"

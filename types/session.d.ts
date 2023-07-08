@@ -6,4 +6,5 @@ export interface User {
   imageUrl: string;
   createdAt: number;
   credits: number;
+  passwordEnabled: boolean;
 }
