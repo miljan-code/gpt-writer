@@ -2,17 +2,19 @@
 
 import { useAtom } from 'jotai';
 import { useLockBody } from '@/hooks/use-lock-body';
-import { showContentAtom } from '@/lib/atoms';
+import { markdownAtom, showContentAtom } from '@/lib/atoms';
 import { Icons } from '@/components/icons';
+import { Markdown } from '@/components/dashboard/markdown';
 
 export const FullscreenContent = () => {
   const [showContent, setShowContent] = useAtom(showContentAtom);
+  const [markdown] = useAtom(markdownAtom);
 
-  useLockBody(!!showContent);
+  useLockBody(showContent);
 
-  const handleCloseFullscren = () => setShowContent('');
+  const handleCloseFullscren = () => setShowContent(false);
 
-  if (showContent)
+  if (showContent && markdown)
     return (
       <div
         onClick={handleCloseFullscren}
@@ -22,13 +24,13 @@ export const FullscreenContent = () => {
           onClick={e => e.stopPropagation()}
           className="bg-background w-full md:w-3/4 lg:w-1/2 h-full p-4 text-sm border-l border-r border-border/50 overflow-auto"
         >
-          <div className="flex justify-end">
+          <div className="pb-4 flex justify-end">
             <Icons.close
               onClick={handleCloseFullscren}
               className="cursor-pointer"
             />
           </div>
-          <div className="pt-4">{showContent}</div>
+          <Markdown source={markdown} />
         </div>
       </div>
     );

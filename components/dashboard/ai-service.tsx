@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCompletion } from 'ai/react';
+import { useAtom } from 'jotai';
+import { markdownAtom } from '@/lib/atoms';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,6 +17,7 @@ interface AIServiceProps {
 
 export const AIService = ({ service }: AIServiceProps) => {
   const [content, setContent] = useState('');
+  const [markdown, setMarkdown] = useAtom(markdownAtom);
 
   const router = useRouter();
 
@@ -32,15 +35,13 @@ export const AIService = ({ service }: AIServiceProps) => {
   });
 
   const prevRef = useRef('');
-  const outputDivRef = useRef<HTMLDivElement>(null);
   const inputTextRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const diff = completion.slice(prevRef.current.length);
     prevRef.current = completion;
-    if (!outputDivRef.current) return;
-    outputDivRef.current.insertAdjacentText('beforeend', diff);
-  }, [completion]);
+    setMarkdown(prev => prev + diff);
+  }, [completion, setMarkdown]);
 
   const wordCount = inputTextRef.current
     ? inputTextRef.current.value.split(' ').length - 1
@@ -80,7 +81,7 @@ export const AIService = ({ service }: AIServiceProps) => {
           </Button>
         </div>
       </div>
-      <OutputBox ref={outputDivRef} />
+      <OutputBox markdown={markdown} />
     </div>
   );
 };

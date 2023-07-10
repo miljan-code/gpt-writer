@@ -1,42 +1,35 @@
-import { forwardRef, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { showContentAtom } from '@/lib/atoms';
+import { markdownAtom, showContentAtom } from '@/lib/atoms';
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from '../ui/hover-card';
-import { Icons } from '../icons';
-import { Button } from '../ui/button';
+} from '@/components/ui/hover-card';
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { Markdown } from '@/components/dashboard/markdown';
 
-export const OutputBox = forwardRef<HTMLDivElement>(({}, ref) => {
+interface OutputBoxProps {
+  markdown: string;
+}
+
+export const OutputBox = ({ markdown }: OutputBoxProps) => {
   const [_, setShowContent] = useAtom(showContentAtom);
+  const [markdownContent] = useAtom(markdownAtom);
 
-  const outputDivRef = useRef<HTMLDivElement | null>(null);
-
-  const handleRef = (node: HTMLDivElement | null) => {
-    outputDivRef.current = node;
-    if (typeof ref === 'function') {
-      ref(node);
-    } else if (ref) {
-      ref.current = node;
-    }
-  };
-
-  const handleCopyText = () => {
-    if (!outputDivRef.current) return null;
-    const text = outputDivRef.current.innerText;
-    navigator.clipboard.writeText(text);
-  };
+  const handleCopyText = () => {};
 
   const handleFullscreen = () => {
-    if (!outputDivRef.current) return null;
-    setShowContent(outputDivRef.current.innerText);
+    if (!markdownContent) return null;
+    setShowContent(true);
   };
 
   return (
     <div className="border border-border/50 rounded-lg w-full max-md:min-h-[30rem] h-full flex flex-col overflow-hidden">
-      <div ref={handleRef} className="h-full px-3 py-2 text-sm overflow-auto" />
+      <div className="h-full px-3 py-2 text-sm overflow-auto">
+        <Markdown source={markdown} />
+      </div>
+
       <div className="py-2 px-4 flex items-center justify-between bg-border/50">
         <div className="text-sm">
           <HoverCard>
@@ -56,5 +49,5 @@ export const OutputBox = forwardRef<HTMLDivElement>(({}, ref) => {
       </div>
     </div>
   );
-});
+};
 OutputBox.displayName = 'OutputBox';

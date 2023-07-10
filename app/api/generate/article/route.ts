@@ -19,6 +19,8 @@ export async function POST(req: Request) {
 
     let { prompt: content } = await req.json();
 
+    console.log(content);
+
     content = content.replace(/\/$/, '').slice(-5000) as string;
 
     const price = 1;
