@@ -53,10 +53,10 @@ export const UploadButton = ({ form, onUploadComplete }: UploadButtonProps) => {
 
   return (
     <Button
+      type="button"
       variant="outline"
       rounded="md"
       className="relative w-fit"
-      // FIXME: when click it fires handleSubmit
       disabled={isUploading}
     >
       <label className="absolute inset-0 w-full h-full cursor-pointer">

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,8 +18,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { toast } from '@/components/ui/use-toast';
+import { UploadButton } from '@/components/dashboard/upload-button';
 import type { User } from '@/types/session';
-import { UploadButton } from './upload-button';
 
 interface UpdateProfileProps {
   currentUser: User;
@@ -26,25 +28,43 @@ interface UpdateProfileProps {
 
 type FormData = z.infer<typeof updateProfileSchema>;
 
-export const UpdateProfile = ({ currentUser }: UpdateProfileProps) => {
+export const UpdateProfileForm = ({ currentUser }: UpdateProfileProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState('');
+
+  const router = useRouter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(updateProfileSchema),
-    defaultValues: {
-      firstName: undefined,
-      lastName: undefined,
-      email: undefined,
-      oldPassword: undefined,
-      newPassword: undefined,
-      imageUrl: undefined,
-    },
     mode: 'onSubmit',
   });
 
-  const onSubmit = (formData: FormData) => {
+  const onSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+
     const formValues = form.getValues();
-    console.log(formValues);
+    const allValuesFalsy = Object.values(formValues).every(value => !value);
+
+    if (allValuesFalsy) return null;
+
+    const result = await fetch('/api/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!result?.ok) {
+      setIsLoading(false);
+      return toast({
+        title: 'Profile not updated',
+        description: 'Something went wrong, please try again.',
+      });
+    }
+
+    setIsLoading(false);
+    router.refresh();
   };
 
   return (
@@ -102,52 +122,61 @@ export const UpdateProfile = ({ currentUser }: UpdateProfileProps) => {
             )}
           />
         </div>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email address</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={currentUser.email}
-                  type="email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex md:items-start flex-col md:flex-row md:justify-between gap-6">
-          <FormField
-            control={form.control}
-            name="oldPassword"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Old password</FormLabel>
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="newPassword"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>New password</FormLabel>
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Button variant="tertiary" rounded="md" type="submit">
+        {currentUser.passwordEnabled && (
+          <>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email address</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={currentUser.email}
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex md:items-start flex-col md:flex-row md:justify-between gap-6">
+              <FormField
+                control={form.control}
+                name="oldPassword"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Old password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>New password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </>
+        )}
+        <Button
+          variant="tertiary"
+          rounded="md"
+          type="submit"
+          disabled={isLoading}
+        >
           Update profile
         </Button>
       </form>

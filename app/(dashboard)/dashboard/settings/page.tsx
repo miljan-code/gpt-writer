@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/session';
-import { UpdateProfile } from '@/components/dashboard/update-profile';
+import { UpdateProfileForm } from '@/components/dashboard/update-profile-form';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default async function SettingsPage() {
       </div>
       <div className="flex md:flex-row flex-col">
         <div className="flex-1">
-          <UpdateProfile currentUser={currentUser} />
+          <UpdateProfileForm currentUser={currentUser} />
         </div>
         <div className="flex-1"></div>
       </div>
