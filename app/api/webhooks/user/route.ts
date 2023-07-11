@@ -4,61 +4,87 @@ import {
   WebhookVerificationError,
 } from 'svix';
 import { headers } from 'next/headers';
-import { clerkClient } from '@clerk/nextjs';
+import { createId } from '@paralleldrive/cuid2';
+import { eq, DrizzleError } from 'drizzle-orm';
+import { db } from '@/db';
+import { account, user } from '@/db/schema';
+import type {
+  UserJSON,
+  WebhookEventType,
+  ObjectType,
+} from '@clerk/clerk-sdk-node';
+
+interface Event {
+  data: UserJSON;
+  object: ObjectType;
+  type: WebhookEventType;
+}
 
 async function handler(req: Request) {
-  const body = await req.json();
-  const heads = {
-    'svix-id': headers().get('svix-id'),
-    'svix-timestamp': headers().get('svix-timestamp'),
-    'svix-signature': headers().get('svix-signature'),
-  };
-
-  if (!process.env.CLERK_WEBHOOK_SECRET) {
-    return new Response(null, { status: 403 });
-  }
-
-  const webhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
-
-  let event: Event | null = null;
-
   try {
+    const body = await req.json();
+    const heads = {
+      'svix-id': headers().get('svix-id'),
+      'svix-timestamp': headers().get('svix-timestamp'),
+      'svix-signature': headers().get('svix-signature'),
+    };
+
+    if (!process.env.CLERK_WEBHOOK_SECRET) {
+      return new Response(null, { status: 403 });
+    }
+
+    const webhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+
+    let event: Event | null = null;
+
     event = webhook.verify(
       JSON.stringify(body),
       heads as WebhookRequiredHeaders
     ) as Event;
-  } catch (error) {
-    let errorMessage = 'Unknown error';
-    if (error instanceof WebhookVerificationError) {
-      errorMessage = error.message;
-      return new Response(errorMessage, { status: 400 });
+
+    if (!event) {
+      return new Response(null, { status: 400 });
     }
-  }
 
-  if (!event) {
-    return new Response(null, { status: 400 });
-  }
+    if (event.type === 'user.created') {
+      const { id, ...attributes } = event.data as UserJSON;
 
-  if (event.type === 'user.created') {
-    const userId = event.data.id as string;
+      await db
+        .insert(account)
+        .values({ id: createId(), userId: id, attributes });
 
-    await clerkClient.users.updateUserMetadata(userId, {
-      publicMetadata: {
+      const [accountDB] = await db
+        .select()
+        .from(account)
+        .where(eq(account.userId, id))
+        .limit(1);
+
+      await db.insert(user).values({
+        id,
+        accountId: accountDB.id,
+        email: attributes.email_addresses[0].email_address,
+        firstName: attributes.first_name,
+        lastName: attributes.last_name,
+        imageUrl: attributes.image_url,
         credits: 30,
-      },
-    });
+        createdAt: new Date(attributes.created_at),
+        updatedAt: new Date(attributes.updated_at),
+      });
+    }
+
+    return new Response(null, { status: 200 });
+  } catch (error) {
+    if (error instanceof WebhookVerificationError) {
+      return new Response(error.message, { status: 400 });
+    }
+
+    if (error instanceof DrizzleError) {
+      return new Response(error.message, { status: 400 });
+    }
+
+    return new Response('Something went wrong', { status: 500 });
   }
-
-  return new Response(null, { status: 200 });
 }
-
-type EventType = 'user.created';
-
-type Event = {
-  data: Record<string, string | number>;
-  object: 'event';
-  type: EventType;
-};
 
 export const GET = handler;
 export const POST = handler;
