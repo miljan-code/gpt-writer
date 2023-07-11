@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'GPT Writer',
   description: 'AI Powered Copywriting Tool',
-  url: 'http://localhost:3000',
+  url: process.env.APP_URL,
   mainNav: [
     {
       label: 'Product',
