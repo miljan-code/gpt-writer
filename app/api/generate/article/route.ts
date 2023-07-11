@@ -19,8 +19,6 @@ export async function POST(req: Request) {
 
     let { prompt: content } = await req.json();
 
-    console.log(content);
-
     content = content.replace(/\/$/, '').slice(-5000) as string;
 
     const price = 1;
@@ -38,8 +36,8 @@ export async function POST(req: Request) {
           role: 'system',
           content:
             'You are an AI writing assistant that writes articles based on provided SEO keywords, article titles, article outlines, and writing tone.' +
-            'Format your responses in Markdown format, to actually look like an article.' +
-            'Limit your responses to no more than 200 words, but make sure to construct complete sentences.',
+            'Format your responses in Markdown format, to actually look like an article and always finish responses with new line break.' +
+            'Limit your response to no more than 190 words, but make sure to construct complete sentences.',
         },
         {
           role: 'user',

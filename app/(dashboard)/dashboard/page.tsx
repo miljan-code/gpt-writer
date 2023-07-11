@@ -183,6 +183,12 @@ export default async function DashboardPage() {
           </div>
         </TabsContent>
       </Tabs>
+      <div className="absolute inset-0 w-full h-full bg-background/10 backdrop-blur-sm flex items-center justify-center">
+        <div className="bg-background/95 flex flex-col items-center justify-center text-2xl font-bold p-4 rounded-md">
+          <span>Dashboard coming soon...</span>
+          <span>Meanwhile, check out our services.</span>
+        </div>
+      </div>
     </>
   );
 }

@@ -38,8 +38,21 @@ const outlinePlaceholders = {
   1: 'eg. What are the benefits of Next.JS',
 };
 
+type Outline = FormData['outline'];
+
+const getOutlinesWithValue = (outlines: Outline): string[] => {
+  if (outlines) {
+    return outlines
+      .map(outline => outline.value || '')
+      .filter(outline => outline);
+  } else {
+    return [];
+  }
+};
+
 export const ArticleWriter = () => {
-  const [markdown, setMarkdown] = useAtom(markdownAtom);
+  const [_markdown, setMarkdown] = useAtom(markdownAtom);
+  const [price, setPrice] = useState(0);
 
   const router = useRouter();
 
@@ -86,17 +99,19 @@ export const ArticleWriter = () => {
     control: form.control,
   });
 
-  const onSubmit = async (formData: FormData) => {
-    let outlines: string[] = [];
+  const outlines = getOutlinesWithValue(form.getValues('outline'));
 
-    if (formData.outline) {
-      outlines = formData.outline
-        .map(outline => outline.value || '')
-        .filter(outline => outline);
-    }
+  useEffect(() => {
+    setPrice(outlines.length);
+  }, [outlines]);
+
+  const onSubmit = async (formData: FormData) => {
+    setMarkdown('');
+
+    const outlines = getOutlinesWithValue(formData.outline);
 
     const prompts = [
-      `Write an article with the title "${formData.title}" and the SEO keywords "${formData.keywords}" with a ${formData.tone} writing tone. First, you are going to write an introduction, and then follow the article outline in the following messages.`,
+      `You are writing the article with the title of "${formData.title}" and the SEO keywords "${formData.keywords}", in a ${formData.tone} writing tone. Write intro for this article and then follow the upcoming prompts.`,
       ...outlines,
     ];
 
@@ -217,6 +232,10 @@ export const ArticleWriter = () => {
                   </FormItem>
                 )}
               />
+              <p className="text-sm flex items-center gap-1">
+                <span>Price: {price + 1}</span>
+                <Icons.coins size={12} />
+              </p>
               <Button
                 variant="tertiary"
                 rounded="md"
@@ -236,7 +255,7 @@ export const ArticleWriter = () => {
           </Form>
         </div>
       </div>
-      <OutputBox markdown={markdown} />
+      <OutputBox />
     </div>
   );
 };

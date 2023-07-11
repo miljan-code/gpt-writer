@@ -1,3 +1,8 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import removeMarkdown from 'markdown-to-text';
 import { useAtom } from 'jotai';
 import { markdownAtom, showContentAtom } from '@/lib/atoms';
 import {
@@ -9,23 +14,28 @@ import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Markdown } from '@/components/dashboard/markdown';
 
-interface OutputBoxProps {
-  markdown: string;
-}
+export const OutputBox = () => {
+  const [_showContent, setShowContent] = useAtom(showContentAtom);
+  const [markdown, setMarkdown] = useAtom(markdownAtom);
 
-export const OutputBox = ({ markdown }: OutputBoxProps) => {
-  const [_, setShowContent] = useAtom(showContentAtom);
-  const [markdownContent] = useAtom(markdownAtom);
+  const pathname = usePathname();
 
-  const handleCopyText = () => {};
+  useEffect(() => {
+    setMarkdown('');
+  }, [pathname, setMarkdown]);
+
+  const handleCopyText = () => {
+    const cleanText = removeMarkdown(markdown);
+    navigator.clipboard.writeText(cleanText);
+  };
 
   const handleFullscreen = () => {
-    if (!markdownContent) return null;
+    if (!markdown) return null;
     setShowContent(true);
   };
 
   return (
-    <div className="border border-border/50 rounded-lg w-full max-md:min-h-[30rem] h-full flex flex-col overflow-hidden">
+    <div className="border border-border/50 rounded-lg w-full max-md:min-h-[30rem] max-h-[52rem] flex flex-col overflow-hidden">
       <div className="h-full px-3 py-2 text-sm overflow-auto">
         <Markdown source={markdown} />
       </div>
@@ -50,4 +60,3 @@ export const OutputBox = ({ markdown }: OutputBoxProps) => {
     </div>
   );
 };
-OutputBox.displayName = 'OutputBox';

@@ -54,7 +54,7 @@ export default async function DashboardLayout({
             <MobileNavigation />
             <UserProfile currentUser={currentUser} />
           </div>
-          <section className="p-6 w-full h-full">{children}</section>
+          <section className="relative p-6 w-full h-full">{children}</section>
         </div>
       </main>
       <FullscreenContent />

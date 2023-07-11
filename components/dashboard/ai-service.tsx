@@ -17,7 +17,7 @@ interface AIServiceProps {
 
 export const AIService = ({ service }: AIServiceProps) => {
   const [content, setContent] = useState('');
-  const [markdown, setMarkdown] = useAtom(markdownAtom);
+  const [_markdown, setMarkdown] = useAtom(markdownAtom);
 
   const router = useRouter();
 
@@ -65,7 +65,10 @@ export const AIService = ({ service }: AIServiceProps) => {
             </span>
           </div>
           <Button
-            onClick={() => complete(content)}
+            onClick={() => {
+              setMarkdown('');
+              complete(content);
+            }}
             variant="tertiary"
             disabled={isLoading}
             rounded="md"
@@ -81,7 +84,7 @@ export const AIService = ({ service }: AIServiceProps) => {
           </Button>
         </div>
       </div>
-      <OutputBox markdown={markdown} />
+      <OutputBox />
     </div>
   );
 };

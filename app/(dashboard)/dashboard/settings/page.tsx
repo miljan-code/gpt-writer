@@ -12,6 +12,9 @@ export default async function SettingsPage() {
 
   if (!currentUser) redirect('/');
 
+  // FIXME: TEMP!
+  if (currentUser) redirect('/dashboard');
+
   return (
     <>
       <div className="mb-8 pb-4 border-b border-border/50">
