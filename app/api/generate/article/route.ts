@@ -1,6 +1,9 @@
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
-import { clerkClient, currentUser } from '@clerk/nextjs';
+import { eq } from 'drizzle-orm';
+import { getCurrentUser } from '@/lib/session';
+import { db } from '@/db';
+import { user as userTable } from '@/db/schema';
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -11,7 +14,7 @@ export const runtime = 'edge';
 
 export async function POST(req: Request) {
   try {
-    const user = await currentUser();
+    const user = await getCurrentUser();
 
     if (!user) {
       return new Response(null, { status: 403 });
@@ -23,7 +26,7 @@ export async function POST(req: Request) {
 
     const price = 1;
 
-    if ((user.publicMetadata.credits as number) < price) {
+    if (user.credits < price) {
       return new Response('Not enough credits to perform this action.', {
         status: 403,
       });
@@ -52,11 +55,10 @@ export async function POST(req: Request) {
       n: 1,
     });
 
-    await clerkClient.users.updateUser(user.id, {
-      publicMetadata: {
-        credits: (user.publicMetadata.credits as number) - price,
-      },
-    });
+    await db
+      .update(userTable)
+      .set({ credits: user.credits - price })
+      .where(eq(userTable.id, user.id));
 
     const stream = OpenAIStream(response);
 

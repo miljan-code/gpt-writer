@@ -1,8 +1,10 @@
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
-import { clerkClient } from '@clerk/nextjs';
+import { eq } from 'drizzle-orm';
 import { stripe } from '@/lib/stripe';
 import { creditPlans } from '@/config/credit-plans';
+import { db } from '@/db';
+import { user as userTable } from '@/db/schema';
 
 interface Metadata extends Stripe.Metadata {
   plan:
@@ -42,7 +44,10 @@ export async function POST(req: Request) {
   if (event.type === 'payment_intent.succeeded') {
     const { plan, userId } = session.metadata as Metadata;
 
-    const user = await clerkClient.users.getUser(userId);
+    const [user] = await db
+      .select()
+      .from(userTable)
+      .where(eq(userTable.id, userId));
 
     const creditPlan = creditPlans.find(
       creditPlan => creditPlan.stripePriceId === plan
@@ -52,12 +57,10 @@ export async function POST(req: Request) {
       return new Response('Something went wrong', { status: 400 });
     }
 
-    await clerkClient.users.updateUser(userId, {
-      publicMetadata: {
-        credits:
-          (user.publicMetadata.credits as number) + creditPlan.creditAmount,
-      },
-    });
+    await db
+      .update(userTable)
+      .set({ credits: user.credits + creditPlan.creditAmount })
+      .where(eq(userTable.id, userId));
   }
 
   return new Response(null, { status: 200 });

@@ -1,4 +1,7 @@
 import { currentUser } from '@clerk/nextjs';
+import { eq } from 'drizzle-orm';
+import { db } from '@/db';
+import { user as userTable } from '@/db/schema';
 import type { User } from '@/types/session';
 
 export const getCurrentUser = async () => {
@@ -6,14 +9,20 @@ export const getCurrentUser = async () => {
 
   if (!user) return null;
 
+  const [userDB] = await db
+    .select()
+    .from(userTable)
+    .where(eq(userTable.id, user.id));
+
   return {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.emailAddresses[0].emailAddress,
-    imageUrl: user.imageUrl,
-    createdAt: user.createdAt,
-    credits: user.publicMetadata.credits as number,
-    passwordEnabled: user.passwordEnabled,
+    id: userDB.id,
+    accountId: userDB.accountId,
+    email: userDB.email,
+    firstName: userDB.firstName,
+    lastName: userDB.lastName,
+    imageUrl: userDB.imageUrl,
+    credits: userDB.credits,
+    createdAt: userDB.createdAt,
+    updatedAt: userDB.updatedAt,
   } satisfies User;
 };

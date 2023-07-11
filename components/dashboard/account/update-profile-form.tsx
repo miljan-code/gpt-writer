@@ -40,12 +40,12 @@ export const UpdateProfileForm = ({ currentUser }: UpdateProfileProps) => {
   });
 
   const onSubmit = async (formData: FormData) => {
-    setIsLoading(true);
-
     const formValues = form.getValues();
     const allValuesFalsy = Object.values(formValues).every(value => !value);
 
     if (allValuesFalsy) return null;
+
+    setIsLoading(true);
 
     const result = await fetch('/api/user', {
       method: 'POST',
@@ -77,7 +77,7 @@ export const UpdateProfileForm = ({ currentUser }: UpdateProfileProps) => {
             <div className="inline-flex flex-col gap-4">
               <Avatar className="w-20 h-20">
                 <AvatarImage
-                  src={profileImageUrl || currentUser.imageUrl}
+                  src={profileImageUrl || currentUser.imageUrl || ''}
                   alt={currentUser.firstName || ''}
                 />
                 <AvatarFallback>
@@ -122,55 +122,6 @@ export const UpdateProfileForm = ({ currentUser }: UpdateProfileProps) => {
             )}
           />
         </div>
-        {currentUser.passwordEnabled && (
-          <>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email address</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={currentUser.email}
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex md:items-start flex-col md:flex-row md:justify-between gap-6">
-              <FormField
-                control={form.control}
-                name="oldPassword"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Old password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="newPassword"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>New password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </>
-        )}
         <Button
           variant="tertiary"
           rounded="md"

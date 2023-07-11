@@ -1,12 +1,12 @@
 import * as z from 'zod';
-import { currentUser } from '@clerk/nextjs';
 import { stripe } from '@/lib/stripe';
 import { siteConfig } from '@/config/site';
 import { creditPlanSchema } from '@/lib/validations/plan';
+import { getCurrentUser } from '@/lib/session';
 
 export async function POST(req: Request) {
   try {
-    const user = await currentUser();
+    const user = await getCurrentUser();
 
     if (!user) {
       return new Response(null, { status: 403 });
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       payment_method_types: ['card'],
       mode: 'payment',
       billing_address_collection: 'auto',
-      customer_email: user.emailAddresses[0].emailAddress,
+      customer_email: user.email,
       line_items: [
         {
           price: process.env[plan.stripePriceId],
