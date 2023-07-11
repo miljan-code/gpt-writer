@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { creditPlans } from '@/config/credit-plans';
-import { CreditPlanCard } from '@/components/dashboard/credit-plan-card';
+import { CreditPlanCard } from '@/components/dashboard/account/credit-plan-card';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 

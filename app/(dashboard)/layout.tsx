@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/session';
-import { UserProfile } from '@/components/dashboard/user-profile';
+import { UserProfile } from '@/components/dashboard/account/user-profile';
 import { MobileNavigation } from '@/components/dashboard/navigation';
 import {
   Navigation,

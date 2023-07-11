@@ -1,4 +1,4 @@
-import { CreditPlans } from '@/components/dashboard/credit-plans';
+import { CreditPlans } from '@/components/dashboard/account/credit-plans';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

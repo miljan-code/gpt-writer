@@ -1,5 +1,6 @@
-import { DateRangePicker } from '@/components/dashboard/date-range-picker';
-import { Overview } from '@/components/dashboard/overview';
+import { redirect } from 'next/navigation';
+import { DateRangePicker } from '@/components/dashboard/stats/date-range-picker';
+import { Overview } from '@/components/dashboard/stats/overview';
 import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
+  // FIXME: TEMP!
+  if (true) redirect('/grammar-checker');
+
   return (
     <>
       <Tabs defaultValue="overview">

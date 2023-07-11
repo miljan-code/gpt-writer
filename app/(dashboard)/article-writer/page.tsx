@@ -1,4 +1,4 @@
-import { ArticleWriter } from '@/components/dashboard/article-writer';
+import { ArticleWriter } from '@/components/dashboard/services/article-writer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
