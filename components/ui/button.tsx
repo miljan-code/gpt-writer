@@ -16,6 +16,7 @@ export const buttonVariants = cva(
         outline:
           'border border-border hover:bg-primary/5 transition-colors duration-300',
         ghost: '',
+        'no-hover': 'border border-border bg-border/50 cursor-default',
       },
       size: {
         default: 'px-4 py-1.5 gap-4',
