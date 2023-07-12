@@ -1,9 +1,10 @@
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { createId } from '@paralleldrive/cuid2';
 import { eq } from 'drizzle-orm';
 import { getCurrentUser } from '@/lib/session';
 import { db } from '@/db';
-import { user as userTable } from '@/db/schema';
+import { prompt, user as userTable } from '@/db/schema';
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -57,6 +58,13 @@ export async function POST(req: Request) {
       .update(userTable)
       .set({ credits: user.credits - price })
       .where(eq(userTable.id, user.id));
+
+    await db.insert(prompt).values({
+      id: createId(),
+      userId: user.id,
+      price,
+      service: 'paraphrase',
+    });
 
     const stream = OpenAIStream(response);
 

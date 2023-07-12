@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from '@/components/ui/use-toast';
 import { UploadButton } from '@/components/dashboard/account/upload-button';
-import type { User } from '@/types/session';
+import type { User } from '@/types/db';
 
 interface UpdateProfileProps {
   currentUser: User;

@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation';
 import { DateRangePicker } from '@/components/dashboard/stats/date-range-picker';
 import { Overview } from '@/components/dashboard/stats/overview';
 import { Icons } from '@/components/icons';
@@ -15,9 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  // FIXME: TEMP!
-  if (true) redirect('/grammar-checker');
-
   return (
     <>
       <Tabs defaultValue="overview">
@@ -187,12 +183,6 @@ export default async function DashboardPage() {
           </div>
         </TabsContent>
       </Tabs>
-      <div className="absolute inset-0 w-full h-full bg-background/10 backdrop-blur-sm flex items-center justify-center">
-        <div className="bg-background/95 flex flex-col items-center justify-center text-2xl font-bold p-4 rounded-md">
-          <span>Dashboard coming soon...</span>
-          <span>Meanwhile, check out our services.</span>
-        </div>
-      </div>
     </>
   );
 }

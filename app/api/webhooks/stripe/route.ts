@@ -1,10 +1,11 @@
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
+import { createId } from '@paralleldrive/cuid2';
 import { eq } from 'drizzle-orm';
 import { stripe } from '@/lib/stripe';
 import { creditPlans } from '@/config/credit-plans';
 import { db } from '@/db';
-import { user as userTable } from '@/db/schema';
+import { user as userTable, payment } from '@/db/schema';
 
 interface Metadata extends Stripe.Metadata {
   plan:
@@ -61,6 +62,13 @@ export async function POST(req: Request) {
       .update(userTable)
       .set({ credits: user.credits + creditPlan.creditAmount })
       .where(eq(userTable.id, userId));
+
+    await db.insert(payment).values({
+      id: createId(),
+      userId: user.id,
+      amount: creditPlan.creditAmount,
+      price: creditPlan.price.toString(),
+    });
   }
 
   return new Response(null, { status: 200 });

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { generateFallback } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import type { User } from '@/types/session';
+import type { User } from '@/types/db';
 
 interface UserProfileProps {
   currentUser: User;

@@ -3,6 +3,8 @@ import { creditPlanSchema } from '@/lib/validations/plan';
 
 type CreditPlan = z.infer<typeof creditPlanSchema>;
 
+export const wordsPerCredit = 200;
+
 export const creditPlans: CreditPlan[] = [
   {
     id: 0,

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
-import type { User } from '@/types/session';
+import type { User } from '@/types/db';
 
 interface HeaderProps {
   currentUser: User | null;

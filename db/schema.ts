@@ -5,6 +5,8 @@ import {
   index,
   int,
   timestamp,
+  decimal,
+  mysqlEnum,
 } from 'drizzle-orm/mysql-core';
 
 export const account = mysqlTable(
@@ -37,10 +39,36 @@ export const user = mysqlTable(
   })
 );
 
-export const prompt = mysqlTable('prompt', {
-  id: varchar('id', { length: 191 }).notNull().primaryKey(),
-  userId: varchar('user_id', { length: 191 }).notNull(),
-  service: varchar('service', { length: 191 }).notNull(),
-  price: int('price').notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-});
+export const prompt = mysqlTable(
+  'prompt',
+  {
+    id: varchar('id', { length: 191 }).notNull().primaryKey(),
+    userId: varchar('user_id', { length: 191 }).notNull(),
+    service: mysqlEnum('service', [
+      'grammar',
+      'article',
+      'paraphrase',
+      'seo',
+      'summarize',
+    ]).notNull(),
+    price: int('price').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  prompt => ({
+    userIdIdx: index('user_id_idx').on(prompt.userId),
+  })
+);
+
+export const payment = mysqlTable(
+  'payment',
+  {
+    id: varchar('id', { length: 191 }).notNull().primaryKey(),
+    userId: varchar('user_id', { length: 191 }).notNull(),
+    amount: int('amount').notNull(),
+    price: decimal('price', { precision: 5, scale: 2 }).notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  payment => ({
+    userIdIdx: index('user_id_idx').on(payment.userId),
+  })
+);
