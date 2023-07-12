@@ -11,17 +11,17 @@ export const ServicesTrack = () => {
 
   const isInViewport = useInViewport<HTMLDivElement>(trackRef);
 
+  const componentPagePosition = 1095;
+  const divider = 2.6;
+
   useEffect(() => {
     if (isInViewport) {
-      // FIXME: find better way
       const handleScroll = () => {
-        let scrollY = (window.scrollY - 1095) / 2.6;
+        let scrollY = (window.scrollY - componentPagePosition) / divider;
 
         if (scrollY > 500) {
           scrollY = 500;
-        }
-
-        if (scrollY < 0) {
+        } else if (scrollY < 0) {
           scrollY = 0;
         }
 
