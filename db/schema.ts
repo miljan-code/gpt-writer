@@ -36,3 +36,11 @@ export const user = mysqlTable(
     emailIdx: index('email_idx').on(user.email),
   })
 );
+
+export const prompt = mysqlTable('prompt', {
+  id: varchar('id', { length: 191 }).notNull().primaryKey(),
+  userId: varchar('user_id', { length: 191 }).notNull(),
+  service: varchar('service', { length: 191 }).notNull(),
+  price: int('price').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+});
