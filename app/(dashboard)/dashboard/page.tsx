@@ -1,3 +1,4 @@
+import { getStatisticsForUser } from '@/lib/stats';
 import { DateRangePicker } from '@/components/dashboard/stats/date-range-picker';
 import { Overview } from '@/components/dashboard/stats/overview';
 import { Icons } from '@/components/icons';
@@ -8,12 +9,19 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import type { Metadata } from 'next';
+import { DashboardCard } from '@/components/dashboard/stats/dashboard-card';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
 };
 
 export default async function DashboardPage() {
+  const stats = await getStatisticsForUser();
+
+  if (!stats) {
+    return <p>Empty state...</p>;
+  }
+
   return (
     <>
       <Tabs defaultValue="overview">
@@ -38,54 +46,9 @@ export default async function DashboardPage() {
         {/* CONTENT */}
         <TabsContent value="overview" className="pt-5 flex flex-col gap-6">
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Credits
-                </h3>
-                <Icons.coins size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">30</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Credits in USD
-                </h3>
-                <Icons.dollar size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">$23.84</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Spent Credits
-                </h3>
-                <Icons.circleDollar size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">14</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Prompts
-                </h3>
-                <Icons.terminal size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">104</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
+            {stats.slice(0, 4).map(card => (
+              <DashboardCard key={card.title} {...card} />
+            ))}
           </div>
           <div className="flex flex-col md:grid gap-6 md:grid-cols-7">
             <div className="border border-border/50 rounded-md w-full pr-3 pb-2 md:col-span-4">
@@ -132,54 +95,9 @@ export default async function DashboardPage() {
             </div>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Words Left
-                </h3>
-                <Icons.coins size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">30</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Words Generated
-                </h3>
-                <Icons.dollar size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">$23.84</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Price per Word
-                </h3>
-                <Icons.circleDollar size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">14</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
-            <div className="border border-border/50 rounded-md w-full p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm tracking-tight font-medium text-accent">
-                  Total Prompts
-                </h3>
-                <Icons.terminal size={14} className="text-accent" />
-              </div>
-              <span className="text-2xl font-bold">104</span>
-              <span className="text-xs text-muted">
-                10% more than last month
-              </span>
-            </div>
+            {stats.slice(4).map(card => (
+              <DashboardCard key={card.title} {...card} />
+            ))}
           </div>
         </TabsContent>
       </Tabs>

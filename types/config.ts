@@ -20,3 +20,10 @@ export interface Service {
   description: string;
   icon: keyof typeof Icons;
 }
+
+export interface StatCard {
+  title: string;
+  label: string;
+  sublabel: string;
+  icon: keyof typeof Icons;
+}
