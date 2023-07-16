@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/hover-card';
 import type { Metadata } from 'next';
 import { DashboardCard } from '@/components/dashboard/stats/dashboard-card';
+import { format } from 'date-fns';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -46,7 +47,7 @@ export default async function DashboardPage() {
         {/* CONTENT */}
         <TabsContent value="overview" className="pt-5 flex flex-col gap-6">
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
-            {stats.slice(0, 4).map(card => (
+            {stats.cards.slice(0, 4).map(card => (
               <DashboardCard key={card.title} {...card} />
             ))}
           </div>
@@ -59,7 +60,7 @@ export default async function DashboardPage() {
                 <p className="text-xs text-muted">Credits spent by month</p>
               </div>
               <div className="-ml-1">
-                <Overview />
+                <Overview data={stats.overview} />
               </div>
             </div>
             <div className="border border-border/50 rounded-md w-full p-6 md:col-span-3">
@@ -70,32 +71,42 @@ export default async function DashboardPage() {
                 <p className="text-xs text-muted">Recently used services</p>
               </div>
               <div className="h-full pt-6 flex flex-col gap-6">
-                {[0, 1, 2, 3, 4, 5].map(item => (
-                  <div key={item} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="rounded-full border border-border/50 flex items-center justify-center h-9 w-9">
-                        <Icons.languages size={18} />
+                {stats.recentPrompts.map(prompt => {
+                  if (!prompt) return null;
+
+                  const Icon = Icons[prompt.icon];
+
+                  return (
+                    <div
+                      key={prompt.id}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="rounded-full border border-border/50 flex items-center justify-center h-9 w-9">
+                          <Icon size={18} />
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-sm font-medium">{prompt.title}</p>
+                          <span className="text-xs text-muted">
+                            {format(prompt.createdAt, 'dd. MMM yyyy HH:ss')}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex flex-col">
-                        <p className="text-sm font-medium">Grammar Checker</p>
-                        <span className="text-xs text-muted">
-                          03. July 2023
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">
+                          -{prompt.price}{' '}
+                          <span className="hidden sm:inline">credits</span>
                         </span>
+                        <Icons.coins size={16} />
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm">
-                        -30 <span className="hidden sm:inline">credits</span>
-                      </span>
-                      <Icons.coins size={16} />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
-            {stats.slice(4).map(card => (
+            {stats.cards.slice(4).map(card => (
               <DashboardCard key={card.title} {...card} />
             ))}
           </div>

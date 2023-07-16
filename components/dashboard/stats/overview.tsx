@@ -1,59 +1,13 @@
 'use client';
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import type { Overview } from '@/lib/stats';
 
-const data = [
-  {
-    name: 'Jan',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Feb',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Mar',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Apr',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'May',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Jun',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Jul',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Aug',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Sep',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Oct',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Nov',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-  {
-    name: 'Dec',
-    total: Math.floor(Math.random() * 500) + 100,
-  },
-];
+interface OverviewProps {
+  data: Overview[];
+}
 
-export function Overview() {
+export function Overview({ data }: OverviewProps) {
   return (
     <ResponsiveContainer width="100%" height={350} className="p-0">
       <BarChart data={data}>
