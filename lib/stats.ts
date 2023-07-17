@@ -46,16 +46,16 @@ export async function calculateStatsForUser() {
 
   return {
     totalCredits: data.currentUser.credits,
-    totalCreditsUSD: (averageCreditPrice * data.currentUser.credits).toFixed(2),
+    totalCreditsUSD:
+      (averageCreditPrice * data.currentUser.credits).toFixed(2) || 0,
     spentCredits,
     totalPrompts: data.prompts.length,
     totalWordsLeft: wordsPerCredit * data.currentUser.credits,
     totalWordsGenerated: wordsPerCredit * spentCredits,
-    pricePerWord: (averageCreditPrice / wordsPerCredit).toFixed(5),
-    pricePerPrompt: (
-      (spentCredits / data.prompts.length) *
-      averageCreditPrice
-    ).toFixed(2),
+    pricePerWord: (averageCreditPrice / wordsPerCredit).toFixed(5) || 0,
+    pricePerPrompt:
+      ((spentCredits / data.prompts.length) * averageCreditPrice).toFixed(2) ||
+      0,
     recentPrompts,
     prompts: data.prompts,
   };
