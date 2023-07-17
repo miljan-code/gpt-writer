@@ -7,6 +7,7 @@ import {
   timestamp,
   decimal,
   mysqlEnum,
+  text,
 } from 'drizzle-orm/mysql-core';
 
 export const account = mysqlTable(
@@ -27,7 +28,7 @@ export const user = mysqlTable(
     id: varchar('id', { length: 191 }).notNull().primaryKey(),
     accountId: varchar('account_id', { length: 191 }).notNull().unique(),
     email: varchar('email', { length: 191 }).notNull().unique(),
-    imageUrl: varchar('image_url', { length: 191 }),
+    imageUrl: text('image_url'),
     credits: int('credits').default(30).notNull(),
     firstName: varchar('first_name', { length: 191 }),
     lastName: varchar('last_name', { length: 191 }),

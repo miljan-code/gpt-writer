@@ -14,6 +14,8 @@ export const getCurrentUser = async () => {
     .from(userTable)
     .where(eq(userTable.id, user.id));
 
+  if (!userDB) return null;
+
   return {
     id: userDB.id,
     accountId: userDB.accountId,

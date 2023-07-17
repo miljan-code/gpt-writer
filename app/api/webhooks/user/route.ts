@@ -67,8 +67,6 @@ async function handler(req: Request) {
         lastName: attributes.last_name,
         imageUrl: attributes.image_url,
         credits: 30,
-        createdAt: new Date(attributes.created_at),
-        updatedAt: new Date(attributes.updated_at),
       });
     }
 
@@ -79,7 +77,7 @@ async function handler(req: Request) {
     }
 
     if (error instanceof DrizzleError) {
-      return new Response(error.message, { status: 401 });
+      return new Response(error.message, { status: 400 });
     }
 
     return new Response('Something went wrong', { status: 500 });
