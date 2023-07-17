@@ -60,6 +60,7 @@ module.exports = {
         'hero-secondary': 'rgba(164, 136, 246, 0.1) 0px 0px 150px 100px',
         'hero-image': 'rgba(0, 99, 198, 0.1) 0px 0px 150px 20px',
         dashboard: 'rgba(0, 99, 198, 0.07) 0px 0px 200px 20px',
+        'primary-card': 'rgba(0, 99, 198, 0.1) 0px 4px 24px',
         'secondary-card': 'rgba(164, 136, 246, 0.1) 0px 4px 24px',
       },
       keyframes: {

@@ -1,6 +1,7 @@
 import { Hero } from '@/components/hero';
 import { Services } from '@/components/services';
 import { Pricing } from '@/components/pricing';
+import { Testimonials } from '@/components/testimonials';
 
 export default function IndexPage() {
   return (
@@ -8,6 +9,7 @@ export default function IndexPage() {
       <Hero />
       <Services />
       <Pricing />
+      <Testimonials />
     </>
   );
 }

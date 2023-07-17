@@ -22,7 +22,7 @@ export const Hero = () => {
           <br className="hidden md:block" />
           Say goodbye to writer&apos;s block and tedious editing.
         </p>
-        <Link href="#" className={buttonVariants({ size: 'lg' })}>
+        <Link href="/dashboard" className={buttonVariants({ size: 'lg' })}>
           <span>Get Started</span>
           <Icons.chevronRight className="h-4 ml-1 -mr-2" />
         </Link>

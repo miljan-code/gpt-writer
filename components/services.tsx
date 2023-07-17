@@ -27,7 +27,7 @@ export const ServiceCard = ({ title, description, icon }: ServiceCardProps) => {
 
 export const Services = () => {
   return (
-    <section className="my-24 md:my-32">
+    <section className="my-24 md:my-32" id="services">
       <div className="max-w-5xl mx-auto p-[1.25rem] pt-16 flex flex-col items-center">
         <Button variant="no-hover" size="sm">
           <span>Services</span>

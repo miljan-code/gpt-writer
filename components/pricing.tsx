@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import { buttonVariants, Button } from '@/components/ui/button';
-import { Icons } from './icons';
+import { Icons } from '@/components/icons';
 
 export const Pricing = () => {
   return (
-    <section className="my-40 md:my-52">
+    <section className="my-40 md:my-52" id="pricing">
       <div className="max-w-5xl mx-auto p-[1.25rem] pt-16 flex flex-col items-center">
         <Button variant="no-hover" size="sm">
           <span>Pricing</span>
         </Button>
-        <h2 className="mt-6 mb-6 font-heading text-4xl sm:text-6xl tracking-wide text-center">
+        <h2 className="mt-6 mb-6 font-heading text-4xl md:text-5xl lg:text-6xl tracking-wide text-center">
           We like keeping things simple
           <br /> Pay once, get credits
         </h2>
@@ -18,8 +18,8 @@ export const Pricing = () => {
           <br className="hidden md:block" />
           No monthly bills, pay as you go.
         </p>
-        <div className="relative mt-8 md:mt-12 flex items-center justify-between gap-8">
-          <div className="border border-border/50 rounded-md px-12 py-6 flex flex-col gap-4 items-center justify-center">
+        <div className="relative mt-8 md:mt-12 flex flex-col md:flex-row items-center justify-between gap-8 w-full">
+          <div className="border border-border/50 rounded-md px-12 py-6 flex flex-col gap-4 items-center justify-center shadow-primary-card sm:w-1/2 md:w-fit">
             <p className="text-accent font-medium flex items-center justify-center gap-2">
               <span>30 credits</span>
               <Icons.coins size={20} />
@@ -59,7 +59,7 @@ export const Pricing = () => {
               Get started
             </Link>
           </div>
-          <div className="relative border border-border/50 rounded-md px-12 py-8 flex flex-col gap-4 items-center justify-center after:absolute after:left-0 after:top-0 after:h-full after:w-[1px] after:bg-pricing-card-gradient before:absolute before:right-0 before:top-0 before:h-full before:w-[1px] before:bg-pricing-card-gradient">
+          <div className="relative border border-border/50 bg-primary/5 rounded-md px-12 py-8 flex flex-col gap-4 items-center justify-center shadow-primary-card sm:w-1/2 md:w-fit after:absolute after:left-0 after:top-0 after:h-full after:w-[1px] after:bg-pricing-card-gradient before:absolute before:right-0 before:top-0 before:h-full before:w-[1px] before:bg-pricing-card-gradient">
             <span className="text-center text-primary text-sm">
               Best for starters
             </span>
@@ -99,7 +99,7 @@ export const Pricing = () => {
               Buy now
             </Link>
           </div>
-          <div className="border border-border/50 rounded-md px-12 py-6 flex flex-col gap-4 items-center justify-center">
+          <div className="border border-border/50 rounded-md px-12 py-6 flex flex-col gap-4 items-center justify-center shadow-primary-card sm:w-1/2 md:w-fit">
             <p className="text-accent font-medium flex items-center justify-center gap-2">
               <span>200 credits</span>
               <Icons.coins size={20} />

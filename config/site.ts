@@ -5,7 +5,7 @@ export const siteConfig = {
   mainNav: [
     {
       label: 'Product',
-      href: '#product',
+      href: '#services',
     },
     {
       label: 'Services',
@@ -16,12 +16,12 @@ export const siteConfig = {
       href: '#pricing',
     },
     {
-      label: 'Company',
-      href: '#about',
+      label: 'Customers',
+      href: '#testimonials',
     },
     {
       label: 'Contact',
-      href: '#contact',
+      href: '#',
     },
   ],
 };
