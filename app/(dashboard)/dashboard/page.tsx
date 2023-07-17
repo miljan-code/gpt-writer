@@ -1,6 +1,8 @@
+import { format } from 'date-fns';
 import { getStatisticsForUser } from '@/lib/stats';
 import { DateRangePicker } from '@/components/dashboard/stats/date-range-picker';
 import { Overview } from '@/components/dashboard/stats/overview';
+import { DashboardCard } from '@/components/dashboard/stats/dashboard-card';
 import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -9,8 +11,6 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import type { Metadata } from 'next';
-import { DashboardCard } from '@/components/dashboard/stats/dashboard-card';
-import { format } from 'date-fns';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -20,13 +20,22 @@ export default async function DashboardPage() {
   const stats = await getStatisticsForUser();
 
   if (!stats) {
-    return <p>Empty state...</p>;
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="border border-border/75 rounded-md p-4 max-w-[25rem] w-full flex flex-col items-center justify-center gap-2">
+          <Icons.ban size={64} className="text-muted" />
+          <h3 className="text-xl font-semibold text-center">
+            Stats have not been loaded
+          </h3>
+          <p className="text-sm">Please try to refresh page</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <>
       <Tabs defaultValue="overview">
-        {/* TABS */}
         <div className="flex flex-col sm:items-center justify-between sm:flex-row max-sm:gap-6">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -44,7 +53,6 @@ export default async function DashboardPage() {
           </TabsList>
           <DateRangePicker />
         </div>
-        {/* CONTENT */}
         <TabsContent value="overview" className="pt-5 flex flex-col gap-6">
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
             {stats.cards.slice(0, 4).map(card => (

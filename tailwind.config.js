@@ -51,6 +51,8 @@ module.exports = {
           'linear-gradient(90deg,rgba(255,255,255,0) 0%, #a488f6 50%, rgba(0,255,0,0) 100%);',
         'secondary-track':
           'linear-gradient(0deg,rgba(255,255,255,0) 0%, #a488f655 50%, rgba(0,255,0,0) 100%);',
+        'pricing-card-gradient':
+          'linear-gradient(0deg,rgba(255,255,255,0) 0%, #1a8cff 50%, rgba(0,255,0,0) 100%);',
       },
       boxShadow: {
         button: 'rgba(26,140,255,0.3) 0px 0px 40px',

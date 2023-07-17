@@ -24,6 +24,7 @@ import {
   TerminalSquare,
   CheckCircle,
   Maximize,
+  Ban,
   type LucideProps,
 } from 'lucide-react';
 
@@ -53,6 +54,7 @@ export const Icons = {
   terminal: TerminalSquare,
   check: CheckCircle,
   maximize: Maximize,
+  ban: Ban,
   logo: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
