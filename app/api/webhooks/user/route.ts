@@ -79,7 +79,7 @@ async function handler(req: Request) {
     }
 
     if (error instanceof DrizzleError) {
-      return new Response(error.message, { status: 400 });
+      return new Response(error.message, { status: 401 });
     }
 
     return new Response('Something went wrong', { status: 500 });

@@ -13,7 +13,7 @@ export const account = mysqlTable(
   'account',
   {
     id: varchar('id', { length: 191 }).notNull().primaryKey(),
-    userId: varchar('user_id', { length: 191 }).notNull(),
+    userId: varchar('user_id', { length: 191 }).notNull().unique(),
     attributes: json('attributes').notNull(),
   },
   account => ({
@@ -25,8 +25,8 @@ export const user = mysqlTable(
   'user',
   {
     id: varchar('id', { length: 191 }).notNull().primaryKey(),
-    accountId: varchar('account_id', { length: 191 }).notNull(),
-    email: varchar('email', { length: 191 }).notNull(),
+    accountId: varchar('account_id', { length: 191 }).notNull().unique(),
+    email: varchar('email', { length: 191 }).notNull().unique(),
     imageUrl: varchar('image_url', { length: 191 }),
     credits: int('credits').default(30).notNull(),
     firstName: varchar('first_name', { length: 191 }),
