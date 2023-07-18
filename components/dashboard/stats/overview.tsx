@@ -1,7 +1,7 @@
 'use client';
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import type { Overview } from '@/lib/stats';
+import type { Overview } from '@/types/stats';
 
 const fakeData = [
   {
