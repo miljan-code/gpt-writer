@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { getStatisticsForUser } from '@/lib/stats';
+import { getStatistics } from '@/lib/statistics';
 import { DateRangePicker } from '@/components/dashboard/stats/date-range-picker';
 import { Overview } from '@/components/dashboard/stats/overview';
 import { DashboardCard } from '@/components/dashboard/stats/dashboard-card';
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const stats = await getStatisticsForUser();
+  const stats = await getStatistics();
 
   if (!stats) {
     return (
