@@ -11,6 +11,7 @@ export const ServicesTrack = () => {
 
   const isInViewport = useInViewport<HTMLDivElement>(trackRef);
 
+  // FIXME: temporary
   const componentPagePosition = 1095;
   const divider = 2.6;
 

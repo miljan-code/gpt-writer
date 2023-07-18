@@ -59,7 +59,9 @@ interface OverviewProps {
 }
 
 export function Overview({ data }: OverviewProps) {
-  if (!data)
+  const isAllEmpty = data.every(item => !item.total);
+
+  if (!data || isAllEmpty)
     return (
       <div className="relative after:absolute after:inset-0 after:w-full after:h-full after:z-10 after:bg-background/20 after:backdrop-blur-md after:ml-1">
         <ResponsiveContainer width="100%" height={350} className="p-0">

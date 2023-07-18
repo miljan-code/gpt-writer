@@ -1,8 +1,8 @@
+import { servicesConfig } from '@/config/services';
 import { ServicesTrack } from '@/components/services-track';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import type { Service } from '@/types/config';
-import { servicesConfig } from '@/config/services';
 
 interface ServiceCardProps extends Service {}
 
