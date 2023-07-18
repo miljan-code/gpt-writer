@@ -96,7 +96,7 @@ export default async function DashboardPage() {
                         <div className="flex flex-col">
                           <p className="text-sm font-medium">{prompt.title}</p>
                           <span className="text-xs text-muted">
-                            {format(prompt.createdAt, 'dd. MMM yyyy HH:ss')}
+                            {format(prompt.createdAt, 'dd. MMM yyyy HH:mm')}
                           </span>
                         </div>
                       </div>

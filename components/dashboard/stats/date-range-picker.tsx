@@ -1,9 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
+import type { DateRange } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,24 @@ export const DateRangePicker = ({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) => {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
+
+  const router = useRouter();
+
+  const handleSetDate = (range: DateRange | undefined) => {
+    setDate(range);
+
+    if (!range || !range.from || !range.to) return;
+
+    const fromDate = range.from?.getDate();
+    const fromMonth = range.from?.getMonth();
+    const toDate = range.to?.getDate();
+    const toMonth = range.to?.getMonth();
+
+    const from = JSON.stringify({ date: fromDate, month: fromMonth });
+    const to = JSON.stringify({ date: toDate, month: toMonth });
+
+    router.push(`?from=${from}&to=${to}`);
+  };
 
   return (
     <div className={cn('grid gap-2', className)}>
@@ -53,7 +72,7 @@ export const DateRangePicker = ({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleSetDate}
             numberOfMonths={2}
             toDate={new Date()}
           />
