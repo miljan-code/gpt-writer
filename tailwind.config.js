@@ -68,10 +68,15 @@ module.exports = {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
         },
+        'slide-down': {
+          '0%': { transform: 'translateY(-10px)', opacity: 0 },
+          '100%': { transform: 'none', opacity: 1 },
+        },
       },
       animation: {
         rotate: 'rotate 20s linear infinite',
         'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'slide-down': 'slide-down 1s ease backwards running',
       },
     },
   },
