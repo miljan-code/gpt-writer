@@ -1,10 +1,10 @@
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { createId } from '@paralleldrive/cuid2';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { getCurrentUser } from '@/lib/session';
 import { db } from '@/db';
-import { prompt, user as userTable } from '@/db/schema';
+import { prompt, user } from '@/db/schema';
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -15,9 +15,9 @@ export const runtime = 'edge';
 
 export async function POST(req: Request) {
   try {
-    const user = await getCurrentUser();
+    const currentUser = await getCurrentUser();
 
-    if (!user) {
+    if (!currentUser) {
       return new Response(null, { status: 403 });
     }
 
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     const price = Math.ceil(content.split(' ').length / 200);
 
-    if (user.credits < price) {
+    if (currentUser.credits < price) {
       return new Response('Not enough credits to perform this action.', {
         status: 403,
       });
@@ -54,16 +54,17 @@ export async function POST(req: Request) {
       n: 1,
     });
 
-    await db
-      .update(userTable)
-      .set({ credits: user.credits - price })
-      .where(eq(userTable.id, user.id));
-
-    await db.insert(prompt).values({
-      id: createId(),
-      userId: user.id,
-      price,
-      service: 'grammar',
+    await db.transaction(async tx => {
+      await tx
+        .update(user)
+        .set({ credits: sql`${user.credits} - ${price}` })
+        .where(eq(user.id, currentUser.id));
+      await tx.insert(prompt).values({
+        id: createId(),
+        userId: currentUser.id,
+        price,
+        service: 'grammar',
+      });
     });
 
     const stream = OpenAIStream(response);

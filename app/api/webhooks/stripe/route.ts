@@ -1,11 +1,11 @@
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { createId } from '@paralleldrive/cuid2';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { stripe } from '@/lib/stripe';
 import { creditPlans } from '@/config/credit-plans';
 import { db } from '@/db';
-import { user as userTable, payment } from '@/db/schema';
+import { user, payment } from '@/db/schema';
 
 interface Metadata extends Stripe.Metadata {
   plan:
@@ -45,11 +45,6 @@ export async function POST(req: Request) {
   if (event.type === 'payment_intent.succeeded') {
     const { plan, userId } = session.metadata as Metadata;
 
-    const [user] = await db
-      .select()
-      .from(userTable)
-      .where(eq(userTable.id, userId));
-
     const creditPlan = creditPlans.find(
       creditPlan => creditPlan.stripePriceId === plan
     );
@@ -58,16 +53,19 @@ export async function POST(req: Request) {
       return new Response('Something went wrong', { status: 400 });
     }
 
-    await db
-      .update(userTable)
-      .set({ credits: user.credits + creditPlan.creditAmount })
-      .where(eq(userTable.id, userId));
-
-    await db.insert(payment).values({
-      id: createId(),
-      userId: user.id,
-      amount: creditPlan.creditAmount,
-      price: creditPlan.price.toString(),
+    await db.transaction(async tx => {
+      await tx
+        .update(user)
+        .set({
+          credits: sql`${user.credits} + ${creditPlan.creditAmount}`,
+        })
+        .where(eq(user.id, userId));
+      await tx.insert(payment).values({
+        id: createId(),
+        userId: userId,
+        amount: creditPlan.creditAmount,
+        price: creditPlan.price.toString(),
+      });
     });
   }
 

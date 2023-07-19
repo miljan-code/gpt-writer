@@ -49,24 +49,24 @@ async function handler(req: Request) {
     if (event.type === 'user.created') {
       const { id, ...attributes } = event.data as UserJSON;
 
-      await db
-        .insert(account)
-        .values({ id: createId(), userId: id, attributes });
-
-      const [accountDB] = await db
-        .select()
-        .from(account)
-        .where(eq(account.userId, id))
-        .limit(1);
-
-      await db.insert(user).values({
-        id,
-        accountId: accountDB.id,
-        email: attributes.email_addresses[0].email_address,
-        firstName: attributes.first_name,
-        lastName: attributes.last_name,
-        imageUrl: attributes.image_url,
-        credits: 30,
+      await db.transaction(async tx => {
+        await tx
+          .insert(account)
+          .values({ id: createId(), userId: id, attributes });
+        const [accountDB] = await tx
+          .select()
+          .from(account)
+          .where(eq(account.userId, id))
+          .limit(1);
+        await tx.insert(user).values({
+          id,
+          accountId: accountDB.id,
+          email: attributes.email_addresses[0].email_address,
+          firstName: attributes.first_name,
+          lastName: attributes.last_name,
+          imageUrl: attributes.image_url,
+          credits: 30,
+        });
       });
     }
 
