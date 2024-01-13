@@ -12,7 +12,7 @@
     "stripe:trigger": "stripe trigger payment_intent.succeeded"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.21.14",
+    "@clerk/nextjs": "^4.29.3",
     "@hookform/resolvers": "^3.1.1",
     "@paralleldrive/cuid2": "^2.2.1",
     "@planetscale/database": "^1.8.0",
